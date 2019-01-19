@@ -1,0 +1,89 @@
+.mini-letter {
+    font-size: 15px;
+    float: right;
+    background-color: #000;
+    width: 30px;
+    height: 30px;
+    margin: 12px 5px;
+    line-height: 30px;
+    border-radius: 50%;
+}
+
+.central-letter {
+    font-size: 80px;
+    background-color: brown;
+    border-radius: 50%;
+    display: block;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    margin: 65px 30px;
+}
+
+
+div.card-shape{
+    width: 170px;
+    height: 240px;
+    background-color: #999;
+    color: #fff;
+    font-size: 150px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    text-align: center;
+    border-radius: 5px;
+    border: 5px solid #999;
+    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.18);
+}
+
+div.card-back {
+    background-color: #9c8b11;
+}
+
+div.green-card{
+    background-color: #79c879;
+    background-image: url(vertical_line.png);
+    background-position: 0 10px;
+    background-position: 82px 0px;
+}
+
+div.pink-card{
+    background-color: #fadadd;
+    background-image: url(black-stripe.png);
+
+
+}
+
+div.blue-card{
+    background-color: #afcfee;
+    background-image: url(black-stripe.png);
+    background-position: 0 10px;
+    background-position: 82px 0px;
+    /* background-repeat: no-repeat; */
+}
+
+/* --------------------- card radio buttons ---------------------*/
+
+.input-hidden {
+  position: absolute;
+  left: -9999px;
+}
+
+/* trial stuff for my card shape */
+input[type=radio]:checked + label>div {
+  border: 5px solid #fff;
+  box-shadow: 0 0 3px 3px #333;
+}
+
+/* Stuff after this is only to make things more pretty */
+input[type=radio] + label>div {
+  /* border: 2px solid #999; */
+  width: 170px;
+  height: 240px;
+  transition: 500ms all;
+}
+
+input[type=radio]:checked + label>div {
+  transform:
+    rotateZ(-10deg)
+    rotateX(10deg);
+}

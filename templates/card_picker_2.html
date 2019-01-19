@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <h1 class="bd-title">Choose a card for your {{ deck_for_title }}</h1>
+
+    <form method="POST" action="{{ url_for('hidden_cards') }}">
+
+        <div class="row">
+            {% for card in current_hand %}
+
+            <div class="col-sm">
+                <input type="radio" id="card_{{ loop.index0 }}" name="card_choice" class="input-hidden" value="{{ loop.index0 }}" required/>
+                <label for="card_{{ loop.index0 }}">
+
+                    <div class="card-shape {{ card[2] }}">
+                        <span class="mini-letter">{{ card[1] }}</span>
+                        <p>{{ card[0] }}</p>
+                    </div>
+                </label>
+            </div>
+
+            {% endfor %}
+        </div><!--endrow-->
+        <div class="row mt-5">
+        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        </div><!--endrow-->
+
+        <div class="row">
+            <h3>Previous choice</h3>
+            <div class="col">
+
+
+
+                <div class="card-shape {{ previous_card[2] }}">
+                    <span class="mini-letter">{{ previous_card[1] }}</span>
+                    <p>{{ previous_card[0] }}</p>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

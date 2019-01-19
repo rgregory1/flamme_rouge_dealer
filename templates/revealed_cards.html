@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <h1 class="bd-title">Your Hand</h1>
+
+    <form method="POST" action="{{ url_for('card_picker_1') }}">
+
+        <div class="row">
+
+
+            <div class="col-sm">
+                <input type="radio" id="sprint" name="deck_choice" class="input-hidden" value="sprint" required/>
+                <label for="sprint">
+
+                    <div class="card-shape">
+                        <span class="mini-letter">S</span>
+                        <p>S</p>
+                    </div>
+                </label>
+            </div>
+
+            <div class="col-sm">
+                <input type="radio" id="roll" name="deck_choice" class="input-hidden" value="roller" required/>
+                <label for="roll">
+
+                    <div class="card-shape">
+                        <span class="mini-letter">R</span>
+                        <p>R</p>
+                    </div>
+                </label>
+            </div>
+
+
+        </div><!--endrow-->
+        <div class="row mt-5">
+        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        </div><!--endrow-->
+
+
+    </form>
+
+{% endblock %}
