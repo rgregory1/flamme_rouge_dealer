@@ -97,13 +97,13 @@ def card_picker_2():
 
     # add rest of hand to facedown cards
     if session["current_deck"] == "sprint":
-        session["sprint_faceup"].extend(session["current_hand"])
+        session["sprint_faceup"] += session["current_hand"]
         session["current_hand"] = []
-        session["sprint_discards"].append(chosen_card)
+        session["sprint_discards"] += [chosen_card]
     else:
-        session["roll_faceup"].extend(session["current_hand"])
+        session["roll_faceup"] += session["current_hand"]
         session["current_hand"] = []
-        session["roll_discards"].append(chosen_card)
+        session["roll_discards"] += [chosen_card]
 
     if session["current_deck"] == "sprint":
         random.shuffle(session["sprint_deck"])
@@ -114,7 +114,6 @@ def card_picker_2():
         random.shuffle(session["roll_deck"])
         session["current_hand"] += [session["roll_deck"].pop() for _ in range(N_CARDS)]
 
-    session.modified = True
     return render_template(
         "card_picker_2.html",
         current_hand=session["current_hand"],
