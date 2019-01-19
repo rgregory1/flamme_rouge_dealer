@@ -47,14 +47,16 @@ def initialize_session(team_color):
 def load_deck_files(team_color):
     # load cards from json data and add team colors
     with open("static/sprinter_cards.json", "r") as f:
-        session["sprint_deck"] = json.load(f)
-    for card in session["sprint_deck"]:
+        sprint_deck = json.load(f)
+    for card in sprint_deck:
         card.append(team_color)
     with open("static/roller_cards.json", "r") as f:
-        session["roll_deck"] = json.load(f)
-    for card in session["roll_deck"]:
+        roll_deck = json.load(f)
+    for card in roll_deck:
         card.append(team_color)
-    session.modified = True
+    session["sprint_deck"] = sprint_deck
+    session["roll_deck"] = roll_deck
+
 
 
 @app.route("/setup", methods=["POST", "GET"])
