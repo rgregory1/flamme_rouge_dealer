@@ -1,42 +1,35 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <h1 class="bd-title">Your Hand</h1>
+    <h1 class="bd-title">Which cyclist would you like to start with?</h1>
 
-    <form method="POST" action="{{ url_for('card_picker_1') }}">
 
         <div class="row">
 
 
             <div class="col-sm">
-                <input type="radio" id="sprint" name="deck_choice" class="input-hidden" value="sprint" required/>
-                <label for="sprint">
+                <a href="/card_picker_1/sprint">
+                    <div class="card-shape card-back roll-back">
+                        <span class="central-letter">S</span>
 
-                    <div class="card-shape">
-                        <span class="mini-letter">S</span>
-                        <p>S</p>
                     </div>
-                </label>
+                </a>
             </div>
 
             <div class="col-sm">
-                <input type="radio" id="roll" name="deck_choice" class="input-hidden" value="roller" required/>
-                <label for="roll">
+                <a href="/card_picker_1/roll">
+                    <div class="card-shape card-back sprint-back">
+                        <span class="central-letter">R</span>
 
-                    <div class="card-shape">
-                        <span class="mini-letter">R</span>
-                        <p>R</p>
                     </div>
-                </label>
+                </a>
             </div>
 
 
         </div><!--endrow-->
-        <div class="row mt-5">
-        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-        </div><!--endrow-->
 
 
-    </form>
+
+    
 
 {% endblock %}

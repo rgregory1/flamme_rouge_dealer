@@ -49,7 +49,7 @@ def setup():
     session['sprint_faceup'] = []
     session['roll_discards'] = []
     session['roll_faceup'] = []
-    session['deck_number'] = 0
+    # session['deck_number'] = 0
     session['current_deck'] = ''
     session.modified = True
     return redirect(url_for("choose_deck"))
@@ -59,9 +59,9 @@ def choose_deck():
     session['round'] += 1
     return render_template('choose_deck.html')
 
-@app.route("/card_picker_1", methods=["POST", "GET"])
-def card_picker_1():
-    chosen_deck = request.form["deck_choice"]
+@app.route("/card_picker_1/<chosen_deck>", methods=["POST", "GET"])
+def card_picker_1(chosen_deck):
+    # chosen_deck = request.form["deck_choice"]
     if chosen_deck == 'sprint':
         random.shuffle(session["sprint_deck"])
         for x in range(4):
@@ -99,6 +99,7 @@ def card_picker_2():
         session['current_hand'] = []
         session['roll_discards'].append(chosen_card)
 
+    #begin suffle of other deck
     if session['current_deck'] == 'roll':
         random.shuffle(session["sprint_deck"])
         for x in range(4):
@@ -122,7 +123,32 @@ def card_picker_2():
 
 @app.route('/hidden_cards', methods=['POST', 'GET'])
 def hidden_cards():
+    # get card choice from last page
+    choosen_card_position = request.form['card_choice']
+    #assign that card choice to chosen card and add that to session list
+    chosen_card = session['current_hand'].pop(int(choosen_card_position))
+    session['choosen_cards'].append(chosen_card)
+
+    #add rest of hand to facedown cards
+    if session['current_deck'] == 'sprint':
+        session['sprint_faceup'].extend(session['current_hand'])
+        session['current_hand'] = []
+        session['sprint_discards'].append(chosen_card)
+    else:
+        session['roll_faceup'].extend(session['current_hand'])
+        session['current_hand'] = []
+        session['roll_discards'].append(chosen_card)
+    session['current_deck'] = []
+    session['current_hand'] = []
+    session.modified = True
     return render_template('hidden_cards.html')
+
+@app.route('/revealed_cards')
+def revealed_cards():
+    choosen_cards = session['choosen_cards']
+    return render_template('revealed_cards.html', choosen_cards=choosen_cards)
+
+
 
 @app.route('/test_endpoint', methods=["POST", "GET"])
 def test_endpoint():

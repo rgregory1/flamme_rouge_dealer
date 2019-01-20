@@ -1,34 +1,35 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <h1 class="bd-title">Reveal your cards when ready</h1>
-
+    <h1 class="bd-title">Tap to reveal cards</h1>
 
 
         <div class="row">
 
 
             <div class="col-sm">
-                <div class="card-shape card-back roll-back">
-                    <span class="central-letter">S</span>
-                    
-                </div>
+                <a href="/revealed_cards">
+                    <div class="card-shape card-back roll-back">
+                        <span class="central-letter">S</span>
+
+                    </div>
+                </a>
             </div>
 
             <div class="col-sm">
-                <div class="card-shape card-back sprint-back">
-                    <span class="central-letter">S</span>
+                <a href="/revealed_cards">
+                    <div class="card-shape card-back sprint-back">
+                        <span class="central-letter">R</span>
 
-                </div>
+                    </div>
+                </a>
             </div>
 
 
         </div><!--endrow-->
-        <div class="row mt-5">
-        <button href="#" class="btn btn-primary btn-lg">Reveal</button>
-        </div><!--endrow-->
 
 
-    </form>
+
+
 
 {% endblock %}
