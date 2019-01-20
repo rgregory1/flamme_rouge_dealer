@@ -7,7 +7,7 @@
 
         <div class="row">
 
-            {% for card in choosen_cards if card[1] == "S" %}
+            {% for card in chosen_cards if card[1] == "S" %}
 
                     <div class="col-sm">
                         <input type="radio" id="card_{{ loop.index0 }}" name="card_choice" class="input-hidden" value="{{ loop.index0 }}" required/>
@@ -22,7 +22,7 @@
 
             {% endfor %}
 
-            {% for card in choosen_cards if card[1] == "R" %}
+            {% for card in chosen_cards if card[1] == "R" %}
 
                     <div class="col-sm">
                         <input type="radio" id="card_{{ loop.index0 }}" name="card_choice" class="input-hidden" value="{{ loop.index0 }}" required/>
