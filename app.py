@@ -40,7 +40,7 @@ def initialize_session(team_color):
     session["sprint_faceup"] = []
     session["roll_discards"] = []
     session["roll_faceup"] = []
-    session["deck_number"] = 0
+    #session["deck_number"] = 0
     session["current_deck"] = ""
 
 
@@ -58,7 +58,6 @@ def load_deck_files(team_color):
     session["roll_deck"] = roll_deck
 
 
-
 @app.route("/setup", methods=["POST", "GET"])
 def setup():
     # collect form info
@@ -69,14 +68,14 @@ def setup():
 
 @app.route("/choose_deck")
 def choose_deck():
+    session['chosen_cards'] = []
     session["round"] += 1
     return render_template("choose_deck.html")
 
 
-@app.route("/card_picker_1", methods=["POST", "GET"])
-def card_picker_1():
-    session["current_deck"] = request.form["deck_choice"]
-    if session["current_deck"] == "sprint":
+@app.route("/card_picker_1/<chosen_deck>", methods=["POST", "GET"])
+def card_picker_1(chosen_deck):
+    if chosen_deck == "sprint":
         random.shuffle(session["sprint_deck"])
         session["current_hand"] += [
             session["sprint_deck"].pop() for _ in range(N_CARDS)
@@ -107,7 +106,8 @@ def card_picker_2():
         session["current_hand"] = []
         session["roll_discards"] += [chosen_card]
 
-    if session["current_deck"] == "sprint":
+    #begin suffle of other deck
+    if session['current_deck'] == 'roll':
         random.shuffle(session["sprint_deck"])
         session["current_hand"] += [
             session["sprint_deck"].pop() for _ in range(N_CARDS)
@@ -126,8 +126,42 @@ def card_picker_2():
 
 @app.route("/hidden_cards", methods=["POST", "GET"])
 def hidden_cards():
-    return render_template("hidden_cards.html")
+    # get card choice from last page
+    choosen_card_position = request.form['card_choice']
+    #assign that card choice to chosen card and add that to session list
+    chosen_card = session['current_hand'].pop(int(choosen_card_position))
+    session['choosen_cards'].append(chosen_card)
 
+    #add rest of hand to facedown cards
+    if session['current_deck'] == 'sprint':
+        session['sprint_faceup'] += session['current_hand']
+        session['current_hand'] = []
+        session['sprint_discards'].append(chosen_card)
+    else:
+        session['roll_faceup'] += session['current_hand']
+        session['current_hand'] = []
+        session['roll_discards'].append(chosen_card)
+    session['current_deck'] = []
+    session['current_hand'] = []
+    session.modified = True
+    return render_template('hidden_cards.html')
+
+@app.route('/revealed_cards/')
+def revealed_cards():
+
+    choosen_cards = session['choosen_cards']
+    next_round = int(session['round']) + 1
+    return render_template('revealed_cards.html', choosen_cards=choosen_cards, next_round=next_round)
+
+@app.route('/add_exaustion/<deck>')
+def add_exaustion(deck):
+    print(deck)
+    if deck == 'sprint':
+        session['sprint_faceup'].append([2,"S","exaustion-card"])
+    else:
+        session['roll_faceup'].append([2,"R","exaustion-card"])
+    session.modified = True
+    return redirect(url_for('revealed_cards'))
 
 @app.route("/test_endpoint", methods=["POST", "GET"])
 def test_endpoint():
@@ -136,4 +170,4 @@ def test_endpoint():
 
 if __name__ == "__main__":
     app.run(debug=True)
-# app.run(host="0.0.0.0")
+    # app.run(host="0.0.0.0")
