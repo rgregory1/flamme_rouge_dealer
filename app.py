@@ -56,7 +56,9 @@ def setup():
 
 @app.route('/choose_deck')
 def choose_deck():
+    session['choosen_cards'] = []
     session['round'] += 1
+    session.modified = True
     return render_template('choose_deck.html')
 
 @app.route("/card_picker_1/<chosen_deck>", methods=["POST", "GET"])
@@ -143,11 +145,22 @@ def hidden_cards():
     session.modified = True
     return render_template('hidden_cards.html')
 
-@app.route('/revealed_cards')
+@app.route('/revealed_cards/')
 def revealed_cards():
-    choosen_cards = session['choosen_cards']
-    return render_template('revealed_cards.html', choosen_cards=choosen_cards)
 
+    choosen_cards = session['choosen_cards']
+    next_round = int(session['round']) + 1
+    return render_template('revealed_cards.html', choosen_cards=choosen_cards, next_round=next_round)
+
+@app.route('/add_exaustion/<deck>')
+def add_exaustion(deck):
+    print(deck)
+    if deck == 'sprint':
+        session['sprint_faceup'].append([2,"S","exaustion-card"])
+    else:
+        session['roll_faceup'].append([2,"R","exaustion-card"])
+    session.modified = True
+    return redirect(url_for('revealed_cards'))
 
 
 @app.route('/test_endpoint', methods=["POST", "GET"])
@@ -158,4 +171,4 @@ def test_endpoint():
 
 if __name__ == "__main__":
     app.run(debug=True)
-# app.run(host="0.0.0.0")
+    # app.run(host="0.0.0.0")
