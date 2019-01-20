@@ -1,16 +1,32 @@
 body {
-    background-color: #F5F5DC;
+    /* background-color: #F5F5DC; */
+    background-color: #E7E7C9;
+    padding-bottom: 50px;
 }
 
 .mini-letter {
-    font-size: 15px;
+    /* font-size: 15px; */
+    font-size: 25px;
     float: right;
     background-color: #000;
-    width: 30px;
-    height: 30px;
-    margin: 12px 5px;
-    line-height: 30px;
+    width: 40px;
+    height: 40px;
+    /* margin: 12px 5px; */
+    margin: 12px 10px;
+    /* line-height: 30px; */
+    line-height: 40px;
     border-radius: 50%;
+}
+
+.mini-leter-square {
+    font-size: 25px;
+    float: right;
+    background-color: #000;
+    width: 40px;
+    height: 40px;
+    margin: 12px 10px;
+    line-height: 40px;
+    border-radius: 5px;
 }
 
 .central-letter {
@@ -40,29 +56,37 @@ div.card-shape{
 }
 
 div.card-back {
-    background-color: #9c8b11;
+    /* background-color: #9c8b11; */
 }
 
-div.green-card{
+div.roll-back {
+    background-color: #ffb733;
+    border: 5px solid #fff;
+}
+
+div.sprint-back {
+    background-color: #b19cd9;
+    border: 5px solid #fff;
+}
+
+div.green-card {
     background-color: #79c879;
     background-image: url(vertical_line.png);
-    background-position: 0 10px;
-    background-position: 82px 0px;
 }
 
-div.pink-card{
+div.pink-card {
     background-color: #fadadd;
     background-image: url(black-stripe.png);
-
-
 }
 
-div.blue-card{
+div.blue-card {
     background-color: #afcfee;
     background-image: url(black-stripe.png);
-    background-position: 0 10px;
-    background-position: 82px 0px;
-    /* background-repeat: no-repeat; */
+}
+
+div.exaustion-card {
+    background-color: #c66464;
+
 }
 
 /* --------------------- card radio buttons ---------------------*/
