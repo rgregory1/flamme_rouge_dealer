@@ -201,7 +201,9 @@ def hidden_cards():
 
 @app.route("/revealed_cards/")
 def revealed_cards():
-
+    if "message" in request.args:
+        message = request.args["message"]
+        print(message)
     choosen_cards = session["choosen_cards"]
     next_round = int(session["round"]) + 1
     return render_template(
@@ -214,10 +216,12 @@ def add_exaustion(deck):
     print(deck)
     if deck == "sprint":
         session["sprint_faceup"].append([2, "S", "exaustion-card"])
+        message = "Exaustion card added to Sprinter Deck"
     else:
         session["roll_faceup"].append([2, "R", "exaustion-card"])
+        message = "Exaustion card added to Roller Deck"
     session.modified = True
-    return redirect(url_for("revealed_cards"))
+    return redirect(url_for("revealed_cards", message=message))
 
 
 @app.route("/test_endpoint", methods=["POST", "GET"])
@@ -227,5 +231,5 @@ def test_endpoint():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    # app.run(host="0.0.0.0")
+    # app.run(debug=True)
+    app.run(host="0.0.0.0")

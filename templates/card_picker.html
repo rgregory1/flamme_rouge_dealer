@@ -13,7 +13,8 @@
                 <label for="card_{{ loop.index0 }}">
 
                     <div class="card-shape {{ card[2] }}">
-                        <span class="mini-letter">{{ card[1] }}</span>
+                        <!-- <span class="mini-letter">{{ card[1] }}</span> -->
+                        <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
                         <p>{{ card[0] }}</p>
                     </div>
                 </label>

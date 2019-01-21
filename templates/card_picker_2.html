@@ -13,7 +13,7 @@
                 <label for="card_{{ loop.index0 }}">
 
                     <div class="card-shape {{ card[2] }}">
-                        <span class="mini-letter">{{ card[1] }}</span>
+                        <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
                         <p>{{ card[0] }}</p>
                     </div>
                 </label>
@@ -31,7 +31,7 @@
         <div class="row mt-5">
             <div class="col-sm-2">
                 <div class="card-shape {{ previous_card[2] }}">
-                    <span class="mini-letter">{{ previous_card[1] }}</span>
+                    <span class="{% if "S" is in previous_card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ previous_card[1] }}</span>
                     <p>{{ previous_card[0] }}</p>
                 </div>
             </div>

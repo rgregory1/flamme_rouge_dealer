@@ -12,7 +12,7 @@
                     <div class="col-sm">
 
                             <div class="card-shape {{ card[2] }}">
-                                <span class="mini-letter">{{ card[1] }}</span>
+                                <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
                                 <p>{{ card[0] }}</p>
                             </div>
                             <a href="/add_exaustion/sprint" class="btn btn-primary btn-lg">Add Exaustion Card to Sprinter Deck</a>
@@ -25,7 +25,7 @@
                     <div class="col-sm">
 
                             <div class="card-shape {{ card[2] }}">
-                                <span class="mini-letter">{{ card[1] }}</span>
+                                <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
                                 <p>{{ card[0] }}</p>
                             </div>
                             <a href="/add_exaustion/roll" class="btn btn-primary btn-lg">Add Exaustion Card to Roller Deck</a>
