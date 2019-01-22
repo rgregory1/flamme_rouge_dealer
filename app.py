@@ -31,7 +31,7 @@ def home():
 @app.route("/setup", methods=["POST", "GET"])
 def setup():
     # collect form info
-    session["player_name"] = request.form["player_name"]
+    # session["player_name"] = request.form["player_name"]
     team_color = request.form["team_color"]
     session["round"] = 0
     session["current_hand"] = []
