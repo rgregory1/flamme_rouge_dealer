@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <h1 class="bd-title">Your Cards</h1>
+<div class="row">
+    <div class="col offset-sm-3 mb-5">
+        <h1 class="bd-title">Your Cards</h1>
+    </div>
+</div>
 
 
 
@@ -9,37 +13,45 @@
 
             {% for card in choosen_cards if card[1] == "S" %}
 
-                    <div class="col-sm">
+                    <div class="col-sm-3 offset-sm-3 col-6">
 
                             <div class="card-shape {{ card[2] }}">
                                 <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
                                 <p>{{ card[0] }}</p>
                             </div>
+                            <div>
                             {% if session["is_sprint_exaust"] == False %}
-                                <a href="/add_exaustion/sprint" class="btn btn-primary btn-lg">Add Exaustion Card to Sprinter Deck</a>
+                                <a href="/add_exaustion/sprint" class="btn btn-secondary btn-lg justify-content-center exaust-button">Add Sprinter<br>Exaustion</a>
+                                {% else %}
+                                    <a href="#" class="btn btn-danger btn-lg exaust-button">Exaustion<br>Added</a>
                             {% endif %}
+                            </div>
                     </div>
 
             {% endfor %}
 
             {% for card in choosen_cards if card[1] == "R" %}
 
-                    <div class="col-sm">
+                    <div class="col-sm-3 col-6">
 
                             <div class="card-shape {{ card[2] }}">
                                 <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
                                 <p>{{ card[0] }}</p>
                             </div>
+                            <div>
                             {% if session["is_roll_exaust"] == False %}
-                                <a href="/add_exaustion/roll" class="btn btn-primary btn-lg">Add Exaustion Card to Roller Deck</a>
+                                <a href="/add_exaustion/roll" class="btn btn-secondary btn-lg exaust-button">Add Roller<br>Exaustion</a>
+                            {% else %}
+                                <a href="#" class="btn btn-danger btn-lg exaust-button">Exaustion<br>Added</a>
                             {% endif %}
+                            </div>
                     </div>
 
             {% endfor %}
 
 
         </div><!--endrow-->
-        <div class="row mt-5">
+        <div class="row mt-5 justify-content-center">
         <a href="{{ url_for('choose_deck') }}" class="btn btn-primary btn-lg">Begin Round {{ next_round }}</a>
         </div><!--endrow-->
 
@@ -55,6 +67,7 @@
 
     <script type="text/javascript">
         new Audio('{{ url_for('static', filename='bike-bell.mp3') }}').play()
+
 
     </script>
 {% endif %}

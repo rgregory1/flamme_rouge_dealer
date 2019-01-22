@@ -217,12 +217,12 @@ def add_exaustion(deck):
     print(deck)
     if deck == "sprint":
         session["sprint_faceup"].append([2, "S", "exaustion-card"])
-        flash("Exaustion card added to Sprinter Deck")
+        # flash("Exaustion card added to Sprinter Deck")
         session["is_sprint_exaust"] = True
 
     else:
         session["roll_faceup"].append([2, "R", "exaustion-card"])
-        flash("Exaustion card added to Roller Deck")
+        # flash("Exaustion card added to Roller Deck")
         session["is_roll_exaust"] = True
     session.modified = True
     return redirect(url_for("revealed_cards"))
