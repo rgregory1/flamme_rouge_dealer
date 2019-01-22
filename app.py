@@ -1,4 +1,4 @@
-from flask import Flask, session, render_template, url_for, redirect, request
+from flask import Flask, session, render_template, url_for, redirect, request, flash
 import random
 from flask_debugtoolbar import DebugToolbarExtension
 import json
@@ -51,6 +51,8 @@ def setup():
     session["roll_faceup"] = []
     # session['deck_number'] = 0
     session["current_deck"] = ""
+    session["is_sprint_exaust"] = False
+    session["is_roll_exaust"] = False
     session.modified = True
     return redirect(url_for("choose_deck"))
 
@@ -59,6 +61,8 @@ def setup():
 def choose_deck():
     session["choosen_cards"] = []
     session["round"] += 1
+    session["is_sprint_exaust"] = False
+    session["is_roll_exaust"] = False
     session.modified = True
     return render_template("choose_deck.html")
 
@@ -201,9 +205,6 @@ def hidden_cards():
 
 @app.route("/revealed_cards/")
 def revealed_cards():
-    if "message" in request.args:
-        message = request.args["message"]
-        print(message)
     choosen_cards = session["choosen_cards"]
     next_round = int(session["round"]) + 1
     return render_template(
@@ -216,12 +217,15 @@ def add_exaustion(deck):
     print(deck)
     if deck == "sprint":
         session["sprint_faceup"].append([2, "S", "exaustion-card"])
-        message = "Exaustion card added to Sprinter Deck"
+        flash("Exaustion card added to Sprinter Deck")
+        session["is_sprint_exaust"] = True
+
     else:
         session["roll_faceup"].append([2, "R", "exaustion-card"])
-        message = "Exaustion card added to Roller Deck"
+        flash("Exaustion card added to Roller Deck")
+        session["is_roll_exaust"] = True
     session.modified = True
-    return redirect(url_for("revealed_cards", message=message))
+    return redirect(url_for("revealed_cards"))
 
 
 @app.route("/test_endpoint", methods=["POST", "GET"])

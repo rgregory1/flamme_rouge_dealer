@@ -15,7 +15,9 @@
                                 <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
                                 <p>{{ card[0] }}</p>
                             </div>
-                            <a href="/add_exaustion/sprint" class="btn btn-primary btn-lg">Add Exaustion Card to Sprinter Deck</a>
+                            {% if session["is_sprint_exaust"] == False %}
+                                <a href="/add_exaustion/sprint" class="btn btn-primary btn-lg">Add Exaustion Card to Sprinter Deck</a>
+                            {% endif %}
                     </div>
 
             {% endfor %}
@@ -28,8 +30,9 @@
                                 <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
                                 <p>{{ card[0] }}</p>
                             </div>
-                            <a href="/add_exaustion/roll" class="btn btn-primary btn-lg">Add Exaustion Card to Roller Deck</a>
-
+                            {% if session["is_roll_exaust"] == False %}
+                                <a href="/add_exaustion/roll" class="btn btn-primary btn-lg">Add Exaustion Card to Roller Deck</a>
+                            {% endif %}
                     </div>
 
             {% endfor %}
@@ -42,5 +45,18 @@
 
 
     </form>
+
+{% endblock %}
+
+
+{% block script %}
+
+{% if session['is_sprint_exaust'] == True or session['is_roll_exaust'] == True %}
+    <p>this works</p>
+    <script type="text/javascript">
+        new Audio('{{ url_for('static', filename='bike-bell.mp3') }}').play()
+
+    </script>
+{% endif %}
 
 {% endblock %}
