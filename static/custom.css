@@ -143,9 +143,31 @@ div.white-card .mini-letter, div.white-card .mini-letter-square {
     background-color: #565656;
 }
 
+div.black-card {
+    background-color: #313131;
+    background-image: url(grey-double.png);
+    background-position: 85% 0, 0 13%;
+}
+
+div.black-card .mini-letter, div.black-card .mini-letter-square {
+    background-color: #565656;
+}
+
+div.red-card {
+    background-color: #c12020;
+    background-image: url(pale-stripe.png);
+    background-position: 83% 0, 0 13%;
+}
+
+div.red-card .mini-letter, div.red-card .mini-letter-square {
+    background-color: #820f29;
+}
+
 
 div.exaustion-card {
     background-color: #c66464;
+    background-image: url(wavy-lines.png);
+    background-position: center;
 
 }
 
@@ -182,10 +204,16 @@ input[type=radio]:checked + label>div {
 }
 
 @media (max-width: 360px) {
-    div.card-shape {
+    div.card-shape, .exaust-button {
     -webkit-transform:scale(0.8);
     -moz-transform:scale(0.8);
     -ms-transform:scale(0.8);
     transform:scale(0.8);
     }
+
+    .col-6 {
+        margin-left: -15px !important;
+    }
+
+
 }
