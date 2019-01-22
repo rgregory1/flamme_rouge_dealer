@@ -33,13 +33,14 @@
 
     <div class="container">
         {% if session['round'] %}
-        <p>Round: {{ session['round'] }}</p>
+        <button type="button" class="btn btn-secondary mt-2">Round: {{ session['round'] }}</button>
+
         {% endif %}
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <div class="alert alert-danger m-5" role="alert">
                     {% for message in messages %}
-                        {{ message }}
+                        <p class="mb-0">{{ message }}</p>
                     {% endfor %}
                 </div>
             {% endif %}

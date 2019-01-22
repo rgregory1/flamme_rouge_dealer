@@ -175,3 +175,13 @@ input[type=radio]:checked + label>div {
     rotateZ(-10deg)
     rotateX(10deg);
 }
+
+
+@media (max-width: 360px) {
+    div.card-shape {
+    -webkit-transform:scale(0.8);
+    -moz-transform:scale(0.8);
+    -ms-transform:scale(0.8);
+    transform:scale(0.8);
+    }
+}
