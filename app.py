@@ -212,17 +212,17 @@ def revealed_cards():
     )
 
 
-@app.route("/add_exaustion/<deck>")
-def add_exaustion(deck):
+@app.route("/add_exhaustion/<deck>")
+def add_exhaustion(deck):
     print(deck)
     if deck == "sprint":
-        session["sprint_faceup"].append([2, "S", "exaustion-card"])
-        # flash("Exaustion card added to Sprinter Deck")
+        session["sprint_faceup"].append([2, "S", "exhaustion-card"])
+        # flash("Exhaustion card added to Sprinter Deck")
         session["is_sprint_exaust"] = True
 
     else:
-        session["roll_faceup"].append([2, "R", "exaustion-card"])
-        # flash("Exaustion card added to Roller Deck")
+        session["roll_faceup"].append([2, "R", "exhaustion-card"])
+        # flash("Exhaustion card added to Roller Deck")
         session["is_roll_exaust"] = True
     session.modified = True
     return redirect(url_for("revealed_cards"))
