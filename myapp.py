@@ -1,6 +1,7 @@
 from flask import Flask, session, render_template, url_for, redirect, request, flash
 import random
-from flask_debugtoolbar import DebugToolbarExtension
+
+# from flask_debugtoolbar import DebugToolbarExtension
 import json
 
 app = Flask(__name__)
