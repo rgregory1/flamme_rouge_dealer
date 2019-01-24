@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="row">
+    <div class="col offset-sm-3 mb-5">
+        <h1 class="bd-title">Your Cards</h1>
+    </div>
+</div>
+
+
+
+        <div class="row">
+
+            {% for card in chosen_cards if card[1] == "S" %}
+
+                    <div class="col-sm-3 offset-sm-3 col-6">
+
+                            <div class="card-shape {{ card[2] }}">
+                                <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
+                                <p>{{ card[0] }}</p>
+                            </div>
+
+                    </div>
+
+            {% endfor %}
+
+            {% for card in chosen_cards if card[1] == "R" %}
+
+                    <div class="col-sm-3 col-6">
+
+                            <div class="card-shape {{ card[2] }}">
+                                <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
+                                <p>{{ card[0] }}</p>
+                            </div>
+
+                    </div>
+
+            {% endfor %}
+
+
+        </div><!--endrow-->
+        <div class="row mt-5 justify-content-center">
+        <a href="{{ url_for('breakaway_picker_2') }}" class="btn btn-primary btn-lg">Choose Second Breakaway Card</a>
+        </div><!--endrow-->
+
+
+    </form>
+
+{% endblock %}

@@ -198,10 +198,16 @@ input[type=radio]:checked + label>div {
     rotateX(10deg);
 }
 
-.exaust-button {
+.exhaust-button {
     width: 170px;
     margin-top: 30px;
 }
+
+.team-color-choice-btns {
+    width: 150px;
+}
+
+
 
 @media (max-width: 360px) {
     div.card-shape, .exaust-button {

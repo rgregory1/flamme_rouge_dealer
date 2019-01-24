@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col offset-md-0 offset-lg-2 mb-5">
+            <h1 class="bd-title">Breakaway {{ deck_for_title }} Card</h1>
+        </div>
+    </div>
+    <form method="POST" action="{{ url_for('hidden_first_breakaway') }}">
+
+        <div class="row">
+            {% for card in current_hand %}
+
+            <div class="col-6 col-md-3 col-lg-2{% if loop.first %} offset-md-0 offset-lg-2{% endif %}">
+                <input type="radio" id="card_{{ loop.index0 }}" name="card_choice" class="input-hidden" value="{{ loop.index0 }}" required/>
+                <label for="card_{{ loop.index0 }}">
+
+                    <div class="card-shape {{ card[2] }}">
+                        <!-- <span class="mini-letter">{{ card[1] }}</span> -->
+                        <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
+                        <p>{{ card[0] }}</p>
+                    </div>
+                </label>
+            </div>
+
+            {% endfor %}
+        </div><!--endrow-->
+        <div class="row mt-5 justify-content-center">
+        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        </div><!--endrow-->
+
+
+    </form>
+
+{% endblock %}
