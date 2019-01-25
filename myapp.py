@@ -3,11 +3,14 @@ import random
 
 # from flask_debugtoolbar import DebugToolbarExtension
 import json
+import pathlib
 
 app = Flask(__name__)
 
+basedir = pathlib.Path(__file__).parent.resolve()
+
 # the toolbar is only enabled in debug mode:
-app.debug = True
+# app.debug = True
 
 # set a 'SECRET_KEY' to enable the Flask session cookies
 app.config["SECRET_KEY"] = "not_very_secret"
@@ -44,13 +47,27 @@ def setup():
     session["current_hand"] = []
     session["chosen_cards"] = []
     # load cards from json data and add team colors
-    with open({{url_for("static", filename="custom.css")}}, "r") as f:
-        # with open("static/sprinter_cards.json", "r") as f:
+
+    suffix = ".json"
+    sprinter_cards_location = "sprinter_cards" + suffix
+    target_directory = basedir / "static" / sprinter_cards_location
+    print(target_directory)
+    with open(target_directory) as f:
         session["sprint_deck"] = json.load(f)
+
+    # with open("static/sprinter_cards.json", "r") as f:
+    # session["sprint_deck"] = json.load(f)
     for card in session["sprint_deck"]:
         card.append(team_color)
-    with open("static/roller_cards.json", "r") as f:
+
+    roller_cards_location = "roller_cards" + suffix
+    target_directory = basedir / "static" / roller_cards_location
+    print(target_directory)
+    with open(target_directory) as f:
         session["roll_deck"] = json.load(f)
+
+    # with open("static/roller_cards.json", "r") as f:
+    #     session["roll_deck"] = json.load(f)
     for card in session["roll_deck"]:
         card.append(team_color)
     session["sprint_discards"] = []
@@ -434,7 +451,6 @@ def test_endpoint():
     return render_template("trial.html")
 
 
-#
-# if __name__ == "__main__":
-#     # app.run(debug=True)
-#     app.run(host="0.0.0.0")
+if __name__ == "__main__":
+    # app.run(debug=True)
+    app.run(host="0.0.0.0")
