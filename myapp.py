@@ -44,7 +44,8 @@ def setup():
     session["current_hand"] = []
     session["chosen_cards"] = []
     # load cards from json data and add team colors
-    with open("static/sprinter_cards.json", "r") as f:
+    with open({{url_for("static", filename="custom.css")}}, "r") as f:
+        # with open("static/sprinter_cards.json", "r") as f:
         session["sprint_deck"] = json.load(f)
     for card in session["sprint_deck"]:
         card.append(team_color)
@@ -433,6 +434,7 @@ def test_endpoint():
     return render_template("trial.html")
 
 
+#
 # if __name__ == "__main__":
 #     # app.run(debug=True)
 #     app.run(host="0.0.0.0")
