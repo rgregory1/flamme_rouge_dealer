@@ -1,7 +1,7 @@
 from flask import Flask, session, render_template, url_for, redirect, request, flash
 import random
 
-# from flask_debugtoolbar import DebugToolbarExtension
+
 import json
 import pathlib
 
@@ -9,19 +9,19 @@ app = Flask(__name__)
 
 basedir = pathlib.Path(__file__).parent.resolve()
 
-# the toolbar is only enabled in debug mode:
-# app.debug = True
-
 # set a 'SECRET_KEY' to enable the Flask session cookies
 app.config["SECRET_KEY"] = "not_very_secret"
 
 
-# toolbar = DebugToolbarExtension(app)
-# # DEBUG_TB_INTERCEPT_REDIRECTS = False
-# app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
-#
-# # Set the secret key to the debugtoolbar
-# app.secret_key = "my_secret"
+from flask_debugtoolbar import DebugToolbarExtension
+
+# the toolbar is only enabled in debug mode:
+app.debug = True
+toolbar = DebugToolbarExtension(app)
+# DEBUG_TB_INTERCEPT_REDIRECTS = False
+app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
+# Set the secret key to the debugtoolbar
+app.secret_key = "my_secret"
 
 
 @app.route("/")
@@ -46,6 +46,10 @@ def setup():
     session["round"] = 0
     session["current_hand"] = []
     session["chosen_cards"] = []
+
+    # general options checked
+    if "exhaustion_reminder" in request.form:
+        session["is_exhaustion_reminder"] = request.form["exhaustion_reminder"]
 
     # load cards from json data and add team colors
     target_directory = basedir / "static" / "sprinter_cards.json"
@@ -437,6 +441,6 @@ def test_endpoint():
     return render_template("trial.html")
 
 
-# if __name__ == "__main__":
-#     # app.run(debug=True)
-#     app.run(host="0.0.0.0")
+if __name__ == "__main__":
+    # app.run(debug=True)
+    app.run(host="0.0.0.0")

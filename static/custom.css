@@ -74,6 +74,9 @@ div.card-shape p {
     text-align: center;
 }
 
+div.roll-back .central-letter {
+    border-radius: 10px;
+}
 
 /* div.card-shape{
     width: 170px;
