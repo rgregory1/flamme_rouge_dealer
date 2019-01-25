@@ -46,30 +46,22 @@ def setup():
     session["round"] = 0
     session["current_hand"] = []
     session["chosen_cards"] = []
-    # load cards from json data and add team colors
 
-    suffix = ".json"
-    sprinter_cards_location = "sprinter_cards" + suffix
-    target_directory = basedir / "static" / sprinter_cards_location
+    # load cards from json data and add team colors
+    target_directory = basedir / "static" / "sprinter_cards.json"
     print(target_directory)
     with open(target_directory) as f:
         session["sprint_deck"] = json.load(f)
-
-    # with open("static/sprinter_cards.json", "r") as f:
-    # session["sprint_deck"] = json.load(f)
     for card in session["sprint_deck"]:
         card.append(team_color)
 
-    roller_cards_location = "roller_cards" + suffix
-    target_directory = basedir / "static" / roller_cards_location
+    target_directory = basedir / "static" / "roller_cards.json"
     print(target_directory)
     with open(target_directory) as f:
         session["roll_deck"] = json.load(f)
-
-    # with open("static/roller_cards.json", "r") as f:
-    #     session["roll_deck"] = json.load(f)
     for card in session["roll_deck"]:
         card.append(team_color)
+
     session["sprint_discards"] = []
     session["sprint_faceup"] = []
     session["roll_discards"] = []
@@ -228,8 +220,6 @@ def breakaway_revealed_card_2():
 @app.route("/breakaway_winner/<place>")
 def breakaway_winner(place):
     place = int(place)
-    print(place)
-    print(type(place))
     if session["current_deck"] == "sprint":
         session["sprint_deck"].append([2, "S", "exhaustion-card"])
         session["sprint_discards"].append(session["chosen_cards"][place])
@@ -249,10 +239,6 @@ def breakaway_winner(place):
 def breakaway_final_check():
     breakaway_card_0 = session["chosen_cards"][0]
     breakaway_card_1 = session["chosen_cards"][1]
-    print(breakaway_card_0)
-    print(breakaway_card_1)
-    print(session["is_breakaway_winner_0"])
-    print(session["is_breakaway_winner_1"])
 
     if (
         session["is_breakaway_winner_0"] == True
@@ -451,6 +437,6 @@ def test_endpoint():
     return render_template("trial.html")
 
 
-if __name__ == "__main__":
-    # app.run(debug=True)
-    app.run(host="0.0.0.0")
+# if __name__ == "__main__":
+#     # app.run(debug=True)
+#     app.run(host="0.0.0.0")
