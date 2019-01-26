@@ -1,7 +1,5 @@
 from flask import Flask, session, render_template, url_for, redirect, request, flash
 import random
-
-
 import json
 import pathlib
 
@@ -51,26 +49,58 @@ def setup():
     if "exhaustion_reminder" in request.form:
         session["is_exhaustion_reminder"] = request.form["exhaustion_reminder"]
 
+    if "add_sprint_exhaustion" in request.form:
+        add_sprint_exhaustion = int(request.form["add_sprint_exhaustion"])
+        add_roll_exhaustion = int(request.form["add_roll_exhaustion"])
+
     # load cards from json data and add team colors
     target_directory = basedir / "static" / "sprinter_cards.json"
-    print(target_directory)
     with open(target_directory) as f:
         session["sprint_deck"] = json.load(f)
     for card in session["sprint_deck"]:
         card.append(team_color)
 
+    if add_sprint_exhaustion > 0:
+        for card in range(add_sprint_exhaustion):
+            session["sprint_deck"].append([2, "S", "exhaustion-card"])
+
     target_directory = basedir / "static" / "roller_cards.json"
-    print(target_directory)
     with open(target_directory) as f:
         session["roll_deck"] = json.load(f)
     for card in session["roll_deck"]:
         card.append(team_color)
 
+    if add_roll_exhaustion > 0:
+        for card in range(add_roll_exhaustion):
+            session["roll_deck"].append([2, "R", "exhaustion-card"])
+
+    if "muscle_team_color" in request.form:
+        muscle_team_color = request.form["muscle_team_color"]
+        session["is_muscle_team"] = True
+
+        # setup muscle sprinter deck
+        target_directory = basedir / "static" / "sprinter_cards.json"
+        with open(target_directory) as f:
+            session["muscle_sprint_deck"] = json.load(f)
+        for card in session["muscle_sprint_deck"]:
+            card.append(muscle_team_color)
+        # add special muscle card
+        session["muscle_sprint_deck"].append([5, "S", "muscle-card"])
+
+        # setup muscle team roller deck
+        target_directory = basedir / "static" / "roller_cards.json"
+        with open(target_directory) as f:
+            session["muscle_roll_deck"] = json.load(f)
+        for card in session["muscle_roll_deck"]:
+            card.append(muscle_team_color)
+
+        random.shuffle(session["muscle_sprint_deck"])
+        random.shuffle(session["muscle_roll_deck"])
+
     session["sprint_discards"] = []
     session["sprint_faceup"] = []
     session["roll_discards"] = []
     session["roll_faceup"] = []
-    # session['deck_number'] = 0
     session["current_deck"] = ""
     session["is_sprint_exaust"] = False
     session["is_roll_exaust"] = False

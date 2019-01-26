@@ -51,9 +51,44 @@
                     <input type="checkbox" autocomplete="off" name="breakaway_option" id="breakaway_option" value="yes"> Breakaway
                   </label>
                 </div>
-            </div>
 
-        </div>
+                <!-- <div class="btn-group-toggle team-color-btn btn-lg" data-toggle="buttons">
+                  <label class="btn btn-secondary team-color-choice-btns btn-lg">
+                    <input type="checkbox" autocomplete="off" name="is_muscle_team" id="is_muscle_team" value="True">Add<br>Muscle Team
+                  </label>
+                </div> -->
+                <p>
+                <button class="btn btn-primary ml-3 btn-lg" type="button" data-toggle="collapse" data-target="#muscle-team-color-chooser" aria-expanded="false" aria-controls="muscle-team-color-chooser">
+                Add<br>Muscle Team
+                </button>
+                </p>
+                <div class="collapse" id="muscle-team-color-chooser">
+                    <p>Choose Muscle Team Color</p>
+                    <div class="btn-group-toggle btn-group-lg btn-group-vertical team-color-choice-btns ml-3" data-toggle="buttons">
+                        <label class="btn btn-secondary team-color-btn">
+                            <input type="radio" name="muscle_team_color" id="red" value="red-card" autocomplete="off"> Red
+                        </label>
+                        <label class="btn btn-secondary team-color-btn">
+                            <input type="radio" name="muscle_team_color" id="green" value="green-card"autocomplete="off"> Green
+                        </label>
+                        <label class="btn btn-secondary team-color-btn">
+                            <input type="radio" name="muscle_team_color" id="black" value="black-card"autocomplete="off"> Black
+                        </label>
+                        <label class="btn btn-secondary team-color-btn">
+                            <input type="radio" name="muscle_team_color" id="white" value="white-card" autocomplete="off"> White
+                        </label>
+                        <label class="btn btn-secondary team-color-btn">
+                            <input type="radio" name="muscle_team_color" id="blue" value="blue-card"autocomplete="off"> Blue
+                        </label>
+                        <label class="btn btn-secondary team-color-btn">
+                            <input type="radio" name="muscle_team_color" id="pink" value="pink-card"autocomplete="off"> Pink
+                        </label>
+                    </div>
+
+                </div>
+            </div><!-- end col -->
+
+        </div><!-- end row -->
         <!---------------------------------- begin general options --------------------------------->
         <hr/>
         <div class="form-group row">
@@ -63,10 +98,49 @@
             </div>
 
             <div class="col-md-4">
+
                 <div class="btn-group-toggle team-color-btn btn-lg" data-toggle="buttons">
                   <label class="btn btn-secondary team-color-choice-btns btn-lg">
                     <input type="checkbox" autocomplete="off" name="exhaustion_reminder" id="exhaustion_reminder" value="True"> Exhaustion<br>Reminders
                   </label>
+                </div>
+
+            </div><!-- end col-->
+        </div><!-- end row -->
+
+        <div class="form-group row">
+            <div class="col-md-2 offset-md-2">
+                <h3><legend class="col-form-label">Starting Exhaustion</legend></h3>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="add_sprint_exhaustion">Additional Sprinter Exhaustion</label>
+                    <select class="form-control" id="add_sprint_exhaustion" name="add_sprint_exhaustion">
+                        <option selected>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="add_roll_exhaustion">Additional Roller Exhaustion</label>
+                    <select class="form-control" id="add_roll_exhaustion" name="add_roll_exhaustion">
+                        <option selected>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                    </select>
                 </div>
             </div>
 
