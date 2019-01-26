@@ -97,6 +97,22 @@ def setup():
         random.shuffle(session["muscle_sprint_deck"])
         random.shuffle(session["muscle_roll_deck"])
 
+    if "peloton_team_color" in request.form:
+        peloton_team_color = request.form["peloton_team_color"]
+        session["is_peloton_team"] = True
+
+        # setup peloton sprinter deck
+        target_directory = basedir / "static" / "peloton_cards.json"
+        with open(target_directory) as f:
+            session["peloton_deck"] = json.load(f)
+        for card in session["peloton_deck"]:
+            card.append(peloton_team_color)
+
+        session["peloton_deck"].append(["A", "P", peloton_team_color])
+        session["peloton_deck"].append(["A", "P", peloton_team_color])
+
+        random.shuffle(session["peloton_deck"])
+
     session["sprint_discards"] = []
     session["sprint_faceup"] = []
     session["roll_discards"] = []

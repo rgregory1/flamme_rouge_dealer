@@ -87,6 +87,27 @@
         </div><!--endrow-->
     {% endif %}
 
+    {% if session["is_peloton_team"] %}
+
+        <div class="row mt-5">
+
+            <div class="offset-sm-3 col-6">
+                <h2>Peloton Team Card</h2>
+            </div>
+        </div><!-- end row -->
+
+        <div class="row mt-3">
+            <div class="col-sm-3 offset-sm-3 col-6">
+
+                    <div class="card-shape {{ session["peloton_deck"][session["round"]-1][2] }}">
+                        <span class="mini-letter">P</span>
+                        <p>{{ session["peloton_deck"][session["round"]-1][0] }}</p>
+                    </div>
+            </div>
+
+        </div><!--endrow-->
+    {% endif %}
+
 
     {% if session["is_exhaustion_reminder"] %}
         {% if session["is_sprint_exaust"] == False and session["is_roll_exaust"] == False %}
