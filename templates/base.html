@@ -43,13 +43,13 @@
             {% endif %}
             </div>
             {% if session['view_played'] %}
-            <div class="col-md-2">
+            <div class="col-md-2 col-sm">
                 <span class="played_cards"><strong>Played Cards: </strong></span>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 col-sm">
                 <span class="played_cards">Sprinter - {% for played in session['sprint_discards'] %} {{ played[0] }}{% endfor %}</span>
              </div>
-             <div class="col-md-2">
+             <div class="col-md-2 col-sm">
                 <span class="played_cards">Roller - {% for played in session['roll_discards'] %} {{ played[0] }}{% endfor %}</span>
             </div>
             {% endif %}
