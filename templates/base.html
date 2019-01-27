@@ -36,12 +36,24 @@
     </nav>
 
     <div class="container">
-        {% if session['round'] %}
-            <button type="button" class="btn btn-secondary mt-2">Round: {{ session['round'] }}</button>
-        {% endif %}
-        {% if session['view_played'] %}
-            <p><strong>Played Cards: </strong> Sprinter - {% for played in session['sprint_discards'] %} {{ played[0] }}{% endfor %} Roller - {% for played in session['roll_discards'] %} {{ played[0] }}{% endfor %}
-        {% endif %}
+        <div class="row pt-1">
+            <div class="col-md-2">
+            {% if session['round'] %}
+                <button type="button" class="btn btn-secondary mt-2">Round: {{ session['round'] }}</button>
+            {% endif %}
+            </div>
+            {% if session['view_played'] %}
+            <div class="col-md-2">
+                <span class="played_cards"><strong>Played Cards: </strong></span>
+            </div>
+            <div class="col-md-2">
+                <span class="played_cards">Sprinter - {% for played in session['sprint_discards'] %} {{ played[0] }}{% endfor %}</span>
+             </div>
+             <div class="col-md-2">
+                <span class="played_cards">Roller - {% for played in session['roll_discards'] %} {{ played[0] }}{% endfor %}</span>
+            </div>
+            {% endif %}
+        </div><!--end row -->
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <div class="alert alert-danger m-5" role="alert">

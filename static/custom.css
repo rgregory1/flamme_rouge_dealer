@@ -16,6 +16,12 @@ body {
     border-radius: 50%;
 } */
 
+.played_cards {
+    line-height: 150%;
+    margin-top: 12px;
+    font-size: 20px;
+}
+
 .mini-letter {
     font-size: 25px;
     float: right;
