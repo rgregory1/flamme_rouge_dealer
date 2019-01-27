@@ -11,15 +11,15 @@ basedir = pathlib.Path(__file__).parent.resolve()
 app.config["SECRET_KEY"] = "not_very_secret"
 
 
-# from flask_debugtoolbar import DebugToolbarExtension
-#
-# # the toolbar is only enabled in debug mode:
-# app.debug = True
-# toolbar = DebugToolbarExtension(app)
-# # DEBUG_TB_INTERCEPT_REDIRECTS = False
-# app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
-# # Set the secret key to the debugtoolbar
-# app.secret_key = "my_secret"
+from flask_debugtoolbar import DebugToolbarExtension
+
+# the toolbar is only enabled in debug mode:
+app.debug = True
+toolbar = DebugToolbarExtension(app)
+# DEBUG_TB_INTERCEPT_REDIRECTS = False
+app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
+# Set the secret key to the debugtoolbar
+app.secret_key = "my_secret"
 
 
 @app.route("/")
@@ -48,6 +48,9 @@ def setup():
     # general options checked
     if "exhaustion_reminder" in request.form:
         session["is_exhaustion_reminder"] = request.form["exhaustion_reminder"]
+
+    if "view_played" in request.form:
+        session["view_played"] = request.form["view_played"]
 
     if "add_sprint_exhaustion" in request.form:
         add_sprint_exhaustion = int(request.form["add_sprint_exhaustion"])
@@ -487,6 +490,6 @@ def test_endpoint():
     return render_template("trial.html")
 
 
-# if __name__ == "__main__":
-#     # app.run(debug=True)
-#     app.run(host="0.0.0.0")
+if __name__ == "__main__":
+    # app.run(debug=True)
+    app.run(host="0.0.0.0")

@@ -4,6 +4,7 @@ body {
     padding-bottom: 50px;
 }
 
+
 /* .mini-letter {
     font-size: 25px;
     float: right;
@@ -218,8 +219,11 @@ input[type=radio]:checked + label>div {
 
 
 
+
+
+
 @media (max-width: 360px) {
-    div.card-shape, .exaust-button {
+    div.card-shape, .exhaust-button {
     -webkit-transform:scale(0.8);
     -moz-transform:scale(0.8);
     -ms-transform:scale(0.8);

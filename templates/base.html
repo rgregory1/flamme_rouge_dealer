@@ -37,8 +37,10 @@
 
     <div class="container">
         {% if session['round'] %}
-        <button type="button" class="btn btn-secondary mt-2">Round: {{ session['round'] }}</button>
-
+            <button type="button" class="btn btn-secondary mt-2">Round: {{ session['round'] }}</button>
+        {% endif %}
+        {% if session['view_played'] %}
+            <p><strong>Played Cards: </strong> Sprinter - {% for played in session['sprint_discards'] %} {{ played[0] }}{% endfor %} Roller - {% for played in session['roll_discards'] %} {{ played[0] }}{% endfor %}
         {% endif %}
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -52,6 +54,9 @@
         {% block body %} {% endblock %}
 
     </div>
+
+
+
 
 
     <!-- Optional JavaScript -->
