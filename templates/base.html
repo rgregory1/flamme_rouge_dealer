@@ -42,17 +42,7 @@
                 <button type="button" class="btn btn-secondary mt-2">Round: {{ session['round'] }}</button>
             {% endif %}
             </div>
-            {% if session['view_played'] %}
-            <div class="col-md-2 col-sm">
-                <span class="played_cards"><strong>Played Cards: </strong></span>
-            </div>
-            <div class="col-md-2 col-sm">
-                <span class="played_cards">Sprinter - {% for played in session['sprint_discards'] %} {{ played[0] }}{% endfor %}</span>
-             </div>
-             <div class="col-md-2 col-sm">
-                <span class="played_cards">Roller - {% for played in session['roll_discards'] %} {{ played[0] }}{% endfor %}</span>
-            </div>
-            {% endif %}
+
         </div><!--end row -->
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -65,6 +55,43 @@
         {% endwith %}
         {% block body %} {% endblock %}
 
+        {% if session['view_played'] %}
+        <div class="row mt-5">
+
+            <div class="col-md-3 col-sm">
+                <span class="played_cards"><strong>Played Cards: </strong></span>
+            </div>
+            <div class="col-md-3 col-sm">
+                <span class="played_cards">Sprinter -
+                    {% for played in session['sprint_discards'] %}
+                        {% if 'exhaustion-card' in played %}
+                            <span class="exhaust-number">
+                        {% endif %}
+                        {{ played[0] }}
+                        {% if 'exhaustion-card' in played %}
+                            </span>
+                        {% endif %}
+                    {% endfor %}</span>
+             </div>
+             <div class="col-md-3 col-sm">
+                <span class="played_cards">Roller - {% for played in session['roll_discards'] %} {% if 'exhaustion-card' in played %}<span class="exhaust-number">{% endif %} {{ played[0] }} {% if 'exhaustion-card' in played %}</span>{% endif %} {% endfor %}</span>
+            </div>
+
+        </div><!--end row-->
+        <div class="row">
+
+            <div class="col-md-3 col-sm">
+                <span class="played_cards"><strong>Recycled Cards: </strong></span>
+            </div>
+            <div class="col-md-3 col-sm">
+                <span class="played_cards">Sprinter - {% for played in session['sprint_faceup'] %} {% if 'exhaustion-card' in played %}<span class="exhaust-number">{% endif %} {{ played[0] }} {% if 'exhaustion-card' in played %}</span>{% endif %} {% endfor %}</span>
+             </div>
+             <div class="col-md-3 col-sm">
+                <span class="played_cards">Roller - {% for played in session['roll_faceup'] %} {% if 'exhaustion-card' in played %}<span class="exhaust-number">{% endif %} {{ played[0] }} {% if 'exhaustion-card' in played %}</span>{% endif %} {% endfor %}</span>
+            </div>
+
+        </div><!--end row-->
+        {% endif %}
     </div>
 
 
