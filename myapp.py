@@ -100,6 +100,29 @@ def setup():
         random.shuffle(session["muscle_sprint_deck"])
         random.shuffle(session["muscle_roll_deck"])
 
+    if "second_muscle_team_color" in request.form:
+        second_muscle_team_color = request.form["second_muscle_team_color"]
+        session["is_muscle_team_2"] = True
+
+        # setup muscle sprinter deck
+        target_directory = basedir / "static" / "sprinter_cards.json"
+        with open(target_directory) as f:
+            session["muscle_sprint_deck_2"] = json.load(f)
+        for card in session["muscle_sprint_deck_2"]:
+            card.append(second_muscle_team_color)
+        # add special muscle card
+        session["muscle_sprint_deck_2"].append([5, "S", "muscle-card"])
+
+        # setup muscle team roller deck
+        target_directory = basedir / "static" / "roller_cards.json"
+        with open(target_directory) as f:
+            session["muscle_roll_deck_2"] = json.load(f)
+        for card in session["muscle_roll_deck_2"]:
+            card.append(second_muscle_team_color)
+
+        random.shuffle(session["muscle_sprint_deck_2"])
+        random.shuffle(session["muscle_roll_deck_2"])
+
     if "peloton_team_color" in request.form:
         peloton_team_color = request.form["peloton_team_color"]
         session["is_peloton_team"] = True
