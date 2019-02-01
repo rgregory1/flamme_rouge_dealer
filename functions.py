@@ -74,6 +74,10 @@ def check_for_ai_teams():
         random.shuffle(session["muscle_sprint_deck"])
         random.shuffle(session["muscle_roll_deck"])
 
+        for card in range(5):
+            session["muscle_sprint_deck"].append([2, "S", "exhaustion-card"])
+            session["muscle_roll_deck"].append([2, "R", "exhaustion-card"])
+
     if "second_muscle_team_color" in request.form:
         second_muscle_team_color = request.form["second_muscle_team_color"]
         session["is_muscle_team_2"] = True
@@ -97,6 +101,10 @@ def check_for_ai_teams():
         random.shuffle(session["muscle_sprint_deck_2"])
         random.shuffle(session["muscle_roll_deck_2"])
 
+        for card in range(5):
+            session["muscle_sprint_deck_2"].append([2, "S", "exhaustion-card"])
+            session["muscle_roll_deck_2"].append([2, "R", "exhaustion-card"])
+
     if "peloton_team_color" in request.form:
         peloton_team_color = request.form["peloton_team_color"]
         session["is_peloton_team"] = True
@@ -109,6 +117,9 @@ def check_for_ai_teams():
             card.append(peloton_team_color)
 
         random.shuffle(session["peloton_deck"])
+
+        for card in range(5):
+            session["peloton_deck"].append([2, "P", "exhaustion-card"])
 
 
 def print_debug(cards_needed, hand_size, number):
