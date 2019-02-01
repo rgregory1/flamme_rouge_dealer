@@ -2,7 +2,6 @@ from flask import Flask, session, render_template, url_for, redirect, request, f
 import random
 import json
 import pathlib
-from functions import *
 
 app = Flask(__name__)
 
@@ -40,11 +39,11 @@ def home():
 @app.route("/setup", methods=["POST", "GET"])
 def setup():
     # collect form info
+    # session["player_name"] = request.form["player_name"]
     team_color = request.form["team_color"]
-
-    initialize_session()
-    load_player_deck(team_color)
-    check_for_ai_teams()
+    session["round"] = 0
+    session["current_hand"] = []
+    session["chosen_cards"] = []
 
     # general options checked
     if "exhaustion_reminder" in request.form:
@@ -53,9 +52,102 @@ def setup():
     if "view_played" in request.form:
         session["view_played"] = request.form["view_played"]
 
+    if "add_sprint_exhaustion" in request.form:
+        add_sprint_exhaustion = int(request.form["add_sprint_exhaustion"])
+        add_roll_exhaustion = int(request.form["add_roll_exhaustion"])
+
+    # load cards from json data and add team colors
+    target_directory = basedir / "static" / "sprinter_cards.json"
+    with open(target_directory) as f:
+        session["sprint_deck"] = json.load(f)
+    for card in session["sprint_deck"]:
+        card.append(team_color)
+
+    if add_sprint_exhaustion > 0:
+        for card in range(add_sprint_exhaustion):
+            session["sprint_deck"].append([2, "S", "exhaustion-card"])
+
+    target_directory = basedir / "static" / "roller_cards.json"
+    with open(target_directory) as f:
+        session["roll_deck"] = json.load(f)
+    for card in session["roll_deck"]:
+        card.append(team_color)
+
+    if add_roll_exhaustion > 0:
+        for card in range(add_roll_exhaustion):
+            session["roll_deck"].append([2, "R", "exhaustion-card"])
+
+    if "muscle_team_color" in request.form:
+        muscle_team_color = request.form["muscle_team_color"]
+        session["is_muscle_team"] = True
+
+        # setup muscle sprinter deck
+        target_directory = basedir / "static" / "sprinter_cards.json"
+        with open(target_directory) as f:
+            session["muscle_sprint_deck"] = json.load(f)
+        for card in session["muscle_sprint_deck"]:
+            card.append(muscle_team_color)
+        # add special muscle card
+        session["muscle_sprint_deck"].append([5, "S", "muscle-card"])
+
+        # setup muscle team roller deck
+        target_directory = basedir / "static" / "roller_cards.json"
+        with open(target_directory) as f:
+            session["muscle_roll_deck"] = json.load(f)
+        for card in session["muscle_roll_deck"]:
+            card.append(muscle_team_color)
+
+        random.shuffle(session["muscle_sprint_deck"])
+        random.shuffle(session["muscle_roll_deck"])
+
+    if "second_muscle_team_color" in request.form:
+        second_muscle_team_color = request.form["second_muscle_team_color"]
+        session["is_muscle_team_2"] = True
+
+        # setup muscle sprinter deck
+        target_directory = basedir / "static" / "sprinter_cards.json"
+        with open(target_directory) as f:
+            session["muscle_sprint_deck_2"] = json.load(f)
+        for card in session["muscle_sprint_deck_2"]:
+            card.append(second_muscle_team_color)
+        # add special muscle card
+        session["muscle_sprint_deck_2"].append([5, "S", "muscle-card"])
+
+        # setup muscle team roller deck
+        target_directory = basedir / "static" / "roller_cards.json"
+        with open(target_directory) as f:
+            session["muscle_roll_deck_2"] = json.load(f)
+        for card in session["muscle_roll_deck_2"]:
+            card.append(second_muscle_team_color)
+
+        random.shuffle(session["muscle_sprint_deck_2"])
+        random.shuffle(session["muscle_roll_deck_2"])
+
+    if "peloton_team_color" in request.form:
+        peloton_team_color = request.form["peloton_team_color"]
+        session["is_peloton_team"] = True
+
+        # setup peloton sprinter deck
+        target_directory = basedir / "static" / "peloton_cards.json"
+        with open(target_directory) as f:
+            session["peloton_deck"] = json.load(f)
+        for card in session["peloton_deck"]:
+            card.append(peloton_team_color)
+
+        session["peloton_deck"].append(["A", "P", peloton_team_color])
+        session["peloton_deck"].append(["A", "P", peloton_team_color])
+
+        random.shuffle(session["peloton_deck"])
+
+    session["sprint_discards"] = []
+    session["sprint_faceup"] = []
+    session["roll_discards"] = []
+    session["roll_faceup"] = []
+    session["current_deck"] = ""
+    session["is_sprint_exaust"] = False
+    session["is_roll_exaust"] = False
     # begin dealing with breakaway options
     if "breakaway_option" in request.form:
-        # setup the breakaway variables
         session["breakaway_option"] = request.form["breakaway_option"]
         session["is_breakaway_winner_0"] = False
         session["is_breakaway_winner_1"] = False
@@ -63,6 +155,12 @@ def setup():
         return render_template("breakaway_deck_choice.html")
     session.modified = True
     return redirect(url_for("choose_deck"))
+
+
+#
+# @app.route("/breakaway_deck_choice")
+# def breakaway_deck_choice():
+#     return render_template("breakaway_deck_choice.html")
 
 
 @app.route("/breakaway_picker_1/<chosen_breakaway_deck>", methods=["POST", "GET"])
@@ -245,8 +343,6 @@ def choose_deck():
     session["round"] += 1
     session["is_sprint_exaust"] = False
     session["is_roll_exaust"] = False
-    if session.get("is_meteo"):
-        session["hand_size"] = 4
     session.modified = True
     return render_template("choose_deck.html")
 
@@ -254,7 +350,37 @@ def choose_deck():
 @app.route("/card_picker_1/<chosen_deck>", methods=["POST", "GET"])
 def card_picker_1(chosen_deck):
     # chosen_deck = request.form["deck_choice"]
-    shuffle_and_draw(chosen_deck, session["hand_size"])
+    if chosen_deck == "sprint":
+        if len(session["sprint_deck"]) < 4:
+            cards_needed = 4 - len(session["sprint_deck"])
+            session["current_hand"].extend(session["sprint_deck"])
+            session["sprint_deck"] = session["sprint_faceup"]
+            session["sprint_faceup"] = []
+            random.shuffle(session["sprint_deck"])
+            for x in range(cards_needed):
+                current_card = session["sprint_deck"].pop()
+                session["current_hand"].append(current_card)
+
+        else:
+            random.shuffle(session["sprint_deck"])
+            for x in range(4):
+                current_card = session["sprint_deck"].pop()
+                session["current_hand"].append(current_card)
+    else:
+        if len(session["roll_deck"]) < 4:
+            cards_needed = 4 - len(session["roll_deck"])
+            session["current_hand"].extend(session["roll_deck"])
+            session["roll_deck"] = session["roll_faceup"]
+            session["roll_faceup"] = []
+            random.shuffle(session["roll_deck"])
+            for x in range(cards_needed):
+                current_card = session["roll_deck"].pop()
+                session["current_hand"].append(current_card)
+        else:
+            random.shuffle(session["roll_deck"])
+            for x in range(4):
+                current_card = session["roll_deck"].pop()
+                session["current_hand"].append(current_card)
     current_hand = session["current_hand"]
     session["current_deck"] = chosen_deck
     if session["current_deck"] == "sprint":
@@ -262,12 +388,8 @@ def card_picker_1(chosen_deck):
     else:
         deck_for_title = "Roller"
     session.modified = True
-    form_destination = "card_picker_2"
     return render_template(
-        "card_picker.html",
-        current_hand=current_hand,
-        deck_for_title=deck_for_title,
-        form_destination=form_destination,
+        "card_picker.html", current_hand=current_hand, deck_for_title=deck_for_title
     )
 
 
@@ -289,14 +411,40 @@ def card_picker_2():
         session["current_hand"] = []
         session["roll_discards"].append(chosen_card)
 
-    # shuffle and deal hand for other deck
-    if session["current_deck"] == "sprint":
-        shuffle_and_draw("roll", session["hand_size"])
-        session["current_deck"] = "roll"
-    else:
-        shuffle_and_draw("sprint", session["hand_size"])
-        session["current_deck"] = "sprint"
+    # begin suffle of other deck
+    if session["current_deck"] == "roll":
+        if len(session["sprint_deck"]) < 4:
+            cards_needed = 4 - len(session["sprint_deck"])
+            session["current_hand"].extend(session["sprint_deck"])
+            session["sprint_deck"] = session["sprint_faceup"]
+            session["sprint_faceup"] = []
+            random.shuffle(session["sprint_deck"])
+            for x in range(cards_needed):
+                current_card = session["sprint_deck"].pop()
+                session["current_hand"].append(current_card)
 
+        else:
+            random.shuffle(session["sprint_deck"])
+            for x in range(4):
+                current_card = session["sprint_deck"].pop()
+                session["current_hand"].append(current_card)
+        session["current_deck"] = "sprint"
+    else:
+        if len(session["roll_deck"]) < 4:
+            cards_needed = 4 - len(session["roll_deck"])
+            session["current_hand"].extend(session["roll_deck"])
+            session["roll_deck"] = session["roll_faceup"]
+            session["roll_faceup"] = []
+            random.shuffle(session["roll_deck"])
+            for x in range(cards_needed):
+                current_card = session["roll_deck"].pop()
+                session["current_hand"].append(current_card)
+        else:
+            random.shuffle(session["roll_deck"])
+            for x in range(4):
+                current_card = session["roll_deck"].pop()
+                session["current_hand"].append(current_card)
+        session["current_deck"] = "roll"
     current_hand = session["current_hand"]
     if session["current_deck"] == "roll":
         deck_for_title = "Roller"
@@ -304,13 +452,11 @@ def card_picker_2():
         deck_for_title = "Sprinter"
     previous_card = session["chosen_cards"][0]
     session.modified = True
-    form_destination = "hidden_cards"
     return render_template(
-        "card_picker.html",
+        "card_picker_2.html",
         current_hand=current_hand,
         deck_for_title=deck_for_title,
         previous_card=previous_card,
-        form_destination=form_destination,
     )
 
 

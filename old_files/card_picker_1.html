@@ -6,7 +6,7 @@
             <h1 class="bd-title">{{ deck_for_title }} Card</h1>
         </div>
     </div>
-    <form method="POST" action="{{ url_for(form_destination) }}">
+    <form method="POST" action="{{ url_for('card_picker_2') }}">
 
         <div class="row">
             {% for card in current_hand %}
@@ -29,17 +29,7 @@
         <button type="submit" class="btn btn-primary btn-lg">Submit</button>
         </div><!--endrow-->
 
-        {% if previous_card %}
-            <div class="row mt-5">
-                <div class="col offset-md-0 offset-lg-2">
-                    <h2 class="mb-3">Previous choice</h2>
-                    <div class="card-shape {{ previous_card[2] }}">
-                        <span class="{% if "S" is in previous_card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ previous_card[1] }}</span>
-                        <p>{{ previous_card[0] }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
+
     </form>
 
 {% endblock %}

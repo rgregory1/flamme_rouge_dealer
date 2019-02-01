@@ -1,21 +1,11 @@
+
+/* ------------------------ general styles ------------------------*/
 body {
-    /* background-color: #F5F5DC; */
     background-color: #E7E7C9;
     padding-bottom: 50px;
 }
 
-
-/* .mini-letter {
-    font-size: 25px;
-    float: right;
-    background-color: #000;
-    width: 40px;
-    height: 40px;
-    margin: 12px 10px;
-    line-height: 40px;
-    border-radius: 50%;
-} */
-
+/* ------------------------ display played card options ------------------------*/
 .played_cards {
     line-height: 150%;
     margin-top: 12px;
@@ -25,6 +15,11 @@ body {
 .exhaust-number {
     color: red;
 }
+
+/* ------------------------ card styles ------------------------*/
+
+
+/* -------------- suite styles --------------*/
 
 .mini-letter {
     font-size: 25px;
@@ -38,29 +33,6 @@ body {
     text-align: center;
 }
 
-div.card-shape{
-    width: 170px;
-    height: 240px;
-    background-color: #999;
-    color: #fff;
-
-    background-size: contain;
-    background-repeat: no-repeat;
-    /* text-align: center; */
-    border-radius: 5px;
-    border: 5px solid #999;
-    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.18);
-}
-
-div.card-shape p {
-    font-size: 150px;
-    text-align: center;
-    float: left;
-    width: 160px;
-    line-height: 100px;
-}
-
-
 .mini-letter-square {
     font-size: 25px;
     float: right;
@@ -71,6 +43,29 @@ div.card-shape p {
     line-height: 40px;
     border-radius: 5px;
     text-align: center;
+}
+
+/* -------------- main card style --------------*/
+div.card-shape{
+    width: 170px;
+    height: 240px;
+    background-color: #999;
+    color: #fff;
+    background-size: contain;
+    background-repeat: no-repeat;
+    /* text-align: center; */
+    border-radius: 5px;
+    border: 5px solid #999;
+    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.18);
+}
+
+/* -------------- front of card style --------------*/
+div.card-shape p {
+    font-size: 150px;
+    text-align: center;
+    float: left;
+    width: 160px;
+    line-height: 100px;
 }
 
 .central-letter {
@@ -85,26 +80,9 @@ div.card-shape p {
     text-align: center;
 }
 
+/* -------------- back of card styles --------------*/
 div.roll-back .central-letter {
     border-radius: 10px;
-}
-
-/* div.card-shape{
-    width: 170px;
-    height: 240px;
-    background-color: #999;
-    color: #fff;
-    font-size: 150px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    text-align: center;
-    border-radius: 5px;
-    border: 5px solid #999;
-    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.18);
-} */
-
-div.card-back {
-    /* background-color: #9c8b11; */
 }
 
 div.roll-back {
@@ -117,9 +95,11 @@ div.sprint-back {
     border: 5px solid #fff;
 }
 
+/* -------------- card front styles --------------*/
+
 div.green-card {
     background-color: #79c879;
-    background-image: url(single-yellow-stripe.png);
+    background-image: url(images/single-yellow-stripe.png);
     background-position: 83% 0;
 }
 
@@ -129,7 +109,7 @@ div.green-card .mini-letter, div.green-card .mini-letter-square {
 
 div.pink-card {
     background-color: #fadadd;
-    background-image: url(pink-double.png);
+    background-image: url(images/pink-double.png);
     background-position: 85% 0;
 }
 
@@ -139,7 +119,7 @@ div.pink-card .mini-letter, div.pink-card .mini-letter-square {
 
 div.blue-card {
     background-color: #afcfee;
-    background-image: url(blue-verticle.png), url(blue-horizontal.png);
+    background-image: url(images/blue-verticle.png), url(images/blue-horizontal.png);
     background-position: 83% 0, 0 13%;
 }
 
@@ -149,7 +129,7 @@ div.blue-card .mini-letter, div.blue-card .mini-letter-square {
 
 div.white-card {
     background-color: #d8d8d8;
-    background-image: url(green-stripe.png);
+    background-image: url(images/green-stripe.png);
     background-position: 83% 0, 0 13%;
 }
 
@@ -159,7 +139,7 @@ div.white-card .mini-letter, div.white-card .mini-letter-square {
 
 div.black-card {
     background-color: #313131;
-    background-image: url(grey-double.png);
+    background-image: url(images/grey-double.png);
     background-position: 85% 0, 0 13%;
 }
 
@@ -169,7 +149,7 @@ div.black-card .mini-letter, div.black-card .mini-letter-square {
 
 div.red-card {
     background-color: #c12020;
-    background-image: url(pale-stripe.png);
+    background-image: url(images/pale-stripe.png);
     background-position: 83% 0, 0 13%;
 }
 
@@ -177,17 +157,16 @@ div.red-card .mini-letter, div.red-card .mini-letter-square {
     background-color: #820f29;
 }
 
-
 div.exhaustion-card {
     background-color: #c66464;
-    background-image: url(wavy-lines.png);
+    background-image: url(images/wavy-lines.png);
     background-position: center;
 
 }
 
 div.muscle-card {
     background-color: #929eaa;
-    background-image: url(wavy-lines.png);
+    background-image: url(images/wavy-lines.png);
     background-position: center;
 }
 
@@ -218,6 +197,8 @@ input[type=radio]:checked + label>div {
     rotateX(10deg);
 }
 
+/* ----------------------- button styles ------------------------*/
+
 .exhaust-button {
     width: 170px;
     margin-top: 30px;
@@ -227,10 +208,7 @@ input[type=radio]:checked + label>div {
     width: 150px;
 }
 
-
-
-
-
+/* -------------- media queries to adjust styles for phones --------------*/
 
 @media (max-width: 360px) {
     div.card-shape, .exhaust-button {

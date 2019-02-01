@@ -54,8 +54,52 @@
         <div class="row mt-5 justify-content-center">
         <a href="{{ url_for('choose_deck') }}" class="btn btn-primary btn-lg"{% if session["is_exhaustion_reminder"] %}{% if session["is_sprint_exaust"] == False and session["is_roll_exaust"] == False %} data-toggle="modal" data-target="#exhaustion-checker-modal"{% endif %}{% endif %}>Begin Round {{ next_round }}</a>
         </div><!--endrow-->
+        {% if session['round'] > 10 %}
+            {% if session['view_played'] %}
+                <div class="row mt-3 justify-content-center">
+
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".show-Remaining-exhaustion" aria-expanded="false" aria-controls="show-Remaining-exhaustion">
+                        Show Remaining<br>Exhaustion
+                    </button>
 
 
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-3 col-sm collapse show-Remaining-exhaustion">
+                        <span class="played_cards"><strong>Remaining Exhaustion: </strong></span>
+                    </div>
+                    <div class="col-sm-3 col-6 collapse show-Remaining-exhaustion">
+                    <span class="played_cards">Sprinter -
+                        {% for card in session['sprint_deck'] %}
+                            {% if card[2] == 'exhaustion-card'%}
+                                <span>2</span>
+                            {% endif %}
+                        {% endfor %}
+                        {% for card in session['sprint_faceup'] %}
+                            {% if card[2] == 'exhaustion-card'%}
+                                <span>2</span>
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                    </div>
+                     <div class="col-sm-3 col-6 collapse show-Remaining-exhaustion">
+                        <span class="played_cards">Roller -
+                            {% for card in session['roll_deck'] %}
+                                {% if card[2] == 'exhaustion-card'%}
+                                    <span>2</span>
+                                {% endif %}
+                            {% endfor %}
+                            {% for card in session['roll_faceup'] %}
+                                {% if card[2] == 'exhaustion-card'%}
+                                    <span>2</span>
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+
+                    </div>
+                </div><!--end row-->
+            {% endif %}
+        {% endif %}
     </form>
 
     {% if session["is_muscle_team"] %}
@@ -173,7 +217,7 @@
 {% if session['is_sprint_exaust'] == True or session['is_roll_exaust'] == True %}
 
     <script type="text/javascript">
-        new Audio('{{ url_for('static', filename='bike-bell.mp3') }}').play()
+        new Audio('{{ url_for('static', filename='sounds/bike-bell.mp3') }}').play()
 
 
     </script>

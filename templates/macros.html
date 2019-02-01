@@ -1,0 +1,12 @@
+{% macro remaining_sp-deck_exhaust %}
+    {% for card in session['sprint_deck'] %}
+        {% if card[2] == 'exhaustion-card'%}
+            <span>2</span>
+        {% endif %}
+    {% endfor %}
+    {% for card in session['sprint_faceup'] %}
+        {% if card[2] == 'exhaustion-card'%}
+            <span>2</span>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
