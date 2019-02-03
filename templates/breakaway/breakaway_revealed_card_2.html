@@ -21,7 +21,7 @@
                             </div>
                             <div>
                             {% if session["is_breakaway_winner_0"] == False %}
-                                <a href="/breakaway_winner/0" class="btn btn-secondary btn-lg justify-content-center exhaust-button">Mark<br>Winner</a>
+                                <a href="/breakaway/breakaway_winner/0" class="btn btn-secondary btn-lg justify-content-center exhaust-button">Mark<br>Winner</a>
                             {% else %}
                                 <a href="#" class="btn btn-danger btn-lg exhaust-button">Exhaustion<br>Added</a>
                             {% endif %}
@@ -41,7 +41,7 @@
                             </div>
                             <div>
                             {% if session["is_breakaway_winner_1"] == False %}
-                                <a href="/breakaway_winner/1" class="btn btn-secondary btn-lg justify-content-center exhaust-button">Mark<br>Winner</a>
+                                <a href="/breakaway/breakaway_winner/1" class="btn btn-secondary btn-lg justify-content-center exhaust-button">Mark<br>Winner</a>
                             {% else %}
                                 <a href="#" class="btn btn-danger btn-lg exhaust-button">Exhaustion<br>Added</a>
                             {% endif %}
@@ -54,7 +54,7 @@
 
         </div><!--endrow-->
         <div class="row mt-5 justify-content-center">
-        <a href="{{ url_for('breakaway_final_check') }}" class="btn btn-primary btn-lg">Move to first Round</a>
+        <a href="{{ url_for('breakaway.breakaway_final_check') }}" class="btn btn-primary btn-lg">Move to first Round</a>
         </div><!--endrow-->
 
 
