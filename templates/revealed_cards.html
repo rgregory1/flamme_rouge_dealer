@@ -36,11 +36,7 @@
                                 <p>{{ card[0] }}</p>
                             </div>
                             <div>
-                            {% if session["is_roll_exaust"] == False %}
-                                <a id='roll' class="btn btn-secondary btn-lg exhaust-button">Add Roller<br>Exhaustion</a>
-                            {% else %}
-                                <a href="#" class="btn btn-danger btn-lg exhaust-button">Exhaustion<br>Added</a>
-                            {% endif %}
+                                <a id='roll' class="btn btn-secondary btn-lg exhaust-button">Add Sprinter<br>Exhaustion</a>
                             </div>
                     </div>
 
@@ -49,7 +45,7 @@
 
         </div><!--endrow-->
         <div class="row mt-5 justify-content-center">
-        <a href="{{ url_for('choose_deck') }}" id="next_button" class="btn btn-primary btn-lg"{% if session["is_exhaustion_reminder"] %}{% if session["is_sprint_exaust"] == False and session["is_roll_exaust"] == False %} data-toggle="modal" data-target="#exhaustion-checker-modal"{% endif %}{% endif %}>Begin Round {{ next_round }}</a>
+        <a href="{{ url_for('choose_deck') }}" id="next_button" class="btn btn-primary btn-lg"{% if session["is_exhaustion_reminder"] %} data-toggle="modal" data-target="#exhaustion-checker-modal"{% endif %}>Begin Round {{ next_round }}</a>
         </div><!--endrow-->
         {% if session['round'] > 10 %}
             {% if session['view_played'] %}
@@ -180,7 +176,7 @@
 
 
     {% if session["is_exhaustion_reminder"] %}
-        {% if session["is_sprint_exaust"] == False and session["is_roll_exaust"] == False %}
+
             <!-- Modal -->
             <div class="modal fade" id="exhaustion-checker-modal" tabindex="-1" role="dialog" aria-labelledby="exhaustion-checker-modal-label" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -204,7 +200,7 @@
                     </div>
                 </div>
             </div>
-        {%endif%}
+
     {% endif %}
 {% endblock %}
 
