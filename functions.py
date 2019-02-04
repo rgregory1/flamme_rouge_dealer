@@ -20,6 +20,7 @@ def initialize_session():
     session["view_played"] = False
     session["is_exhaustion_reminder"] = False
     session["hand_size"] = 4
+    session["options"] = {}
 
 
 def load_player_deck(team_color):

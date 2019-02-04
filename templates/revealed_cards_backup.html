@@ -20,8 +20,11 @@
                                 <p>{{ card[0] }}</p>
                             </div>
                             <div>
-                                <a id='sprint' class="btn btn-secondary btn-lg exhaust-button">Add Sprinter<br>Exhaustion</a>
-
+                            {% if session["is_sprint_exaust"] == False %}
+                                <a href="/add_exhaustion/sprint" class="btn btn-secondary btn-lg justify-content-center exhaust-button">Add Sprinter<br>Exhaustion</a>
+                                {% else %}
+                                    <a href="#" class="btn btn-danger btn-lg exhaust-button">Exhaustion<br>Added</a>
+                            {% endif %}
                             </div>
                     </div>
 
@@ -37,7 +40,7 @@
                             </div>
                             <div>
                             {% if session["is_roll_exaust"] == False %}
-                                <a id='roll' class="btn btn-secondary btn-lg exhaust-button">Add Roller<br>Exhaustion</a>
+                                <a href="/add_exhaustion/roll" class="btn btn-secondary btn-lg exhaust-button">Add Roller<br>Exhaustion</a>
                             {% else %}
                                 <a href="#" class="btn btn-danger btn-lg exhaust-button">Exhaustion<br>Added</a>
                             {% endif %}
@@ -49,7 +52,7 @@
 
         </div><!--endrow-->
         <div class="row mt-5 justify-content-center">
-        <a href="{{ url_for('choose_deck') }}" id="next_button" class="btn btn-primary btn-lg"{% if session["is_exhaustion_reminder"] %}{% if session["is_sprint_exaust"] == False and session["is_roll_exaust"] == False %} data-toggle="modal" data-target="#exhaustion-checker-modal"{% endif %}{% endif %}>Begin Round {{ next_round }}</a>
+        <a href="{{ url_for('choose_deck') }}" class="btn btn-primary btn-lg"{% if session["is_exhaustion_reminder"] %}{% if session["is_sprint_exaust"] == False and session["is_roll_exaust"] == False %} data-toggle="modal" data-target="#exhaustion-checker-modal"{% endif %}{% endif %}>Begin Round {{ next_round }}</a>
         </div><!--endrow-->
         {% if session['round'] > 10 %}
             {% if session['view_played'] %}
@@ -211,29 +214,13 @@
 
 {% block script %}
 
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('.exhaust-button').on('click', function() {
+{% if session['is_sprint_exaust'] == True or session['is_roll_exaust'] == True %}
 
-            var deck_id = $(this).attr('id');
-
-            req = $.ajax({
-                url: '/add_exhaustion',
-                type: 'POST',
-                data : { deck_id : deck_id }
-            });
+    <script type="text/javascript">
+        new Audio('{{ url_for('static', filename='sounds/bike-bell.mp3') }}').play()
 
 
-
-            $('#'+deck_id).fadeOut(function(){
-                $('#'+deck_id).html('Exhaustion<br>Added');
-                $('#'+deck_id).removeClass( "btn-secondary" ).addClass( "btn-danger" );
-
-            }).fadeIn();
-
-            $('#next_button').removeAttr('data-toggle');
-        });
-    });
-</script>
+    </script>
+{% endif %}
 
 {% endblock %}

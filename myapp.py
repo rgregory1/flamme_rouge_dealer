@@ -66,6 +66,9 @@ def setup():
     if "view_played" in request.form:
         session["view_played"] = request.form["view_played"]
 
+    if "is_meteo" in request.form:
+        session["options"]["is_meteo"] = request.form["is_meteo"]
+
     # begin dealing with breakaway options
     if "breakaway_option" in request.form:
         # setup the breakaway variables
@@ -185,8 +188,11 @@ def revealed_cards():
     )
 
 
-@app.route("/add_exhaustion/<deck>")
-def add_exhaustion(deck):
+@app.route("/add_exhaustion", methods=["POST"])
+def add_exhaustion():
+    deck = request.form["deck_id"]
+    print("I am inside the add_exhaustion route")
+    print(deck)
     if deck == "sprint":
         session["sprint_faceup"].append([2, "S", "exhaustion-card"])
         # flash("Exhaustion card added to Sprinter Deck")
