@@ -14,15 +14,13 @@
             {% for card in chosen_cards if card[1] == "S" %}
 
                     <div class="col-sm-3 offset-sm-3 col-6">
-
-                            <div class="card-shape {{ card[2] }}">
-                                <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
-                                <p>{{ card[0] }}</p>
-                            </div>
-                            <div>
-                                <a id='sprint' class="btn btn-secondary btn-lg exhaust-button">Add Sprinter<br>Exhaustion</a>
-
-                            </div>
+                        <div class="card-shape {{ card[2] }}">
+                            <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
+                            <p>{{ card[0] }}</p>
+                        </div>
+                        <div>
+                            <a id='sprint' class="btn btn-secondary btn-lg exhaust-button">Add Sprinter<br>Exhaustion</a>
+                        </div>
                     </div>
 
             {% endfor %}
@@ -30,14 +28,13 @@
             {% for card in chosen_cards if card[1] == "R" %}
 
                     <div class="col-sm-3 col-6">
-
-                            <div class="card-shape {{ card[2] }}">
-                                <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
-                                <p>{{ card[0] }}</p>
-                            </div>
-                            <div>
-                                <a id='roll' class="btn btn-secondary btn-lg exhaust-button">Add Sprinter<br>Exhaustion</a>
-                            </div>
+                        <div class="card-shape {{ card[2] }}">
+                            <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
+                            <p>{{ card[0] }}</p>
+                        </div>
+                        <div>
+                            <a id='roll' class="btn btn-secondary btn-lg exhaust-button">Add Sprinter<br>Exhaustion</a>
+                        </div>
                     </div>
 
             {% endfor %}
@@ -212,6 +209,7 @@
         $('.exhaust-button').on('click', function() {
 
             var deck_id = $(this).attr('id');
+            var dingDing = new Audio('{{ url_for('static', filename='sounds/bike-bell.mp3') }}')
 
             req = $.ajax({
                 url: '/add_exhaustion',
@@ -228,6 +226,7 @@
             }).fadeIn();
 
             $('#next_button').removeAttr('data-toggle');
+            dingDing.play();
         });
     });
 </script>

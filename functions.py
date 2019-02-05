@@ -19,7 +19,8 @@ def initialize_session():
     session["is_roll_exaust"] = False
     session["view_played"] = False
     session["is_exhaustion_reminder"] = False
-    session["hand_size"] = 4
+    session["sprint_hand_size"] = 4
+    session["roll_hand_size"] = 4
     session["options"] = {}
 
 

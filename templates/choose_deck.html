@@ -19,6 +19,14 @@
 
                     </div>
                 </a>
+                {% if session['is_meteo'] %}
+                <div>
+                    <a id='sprint_tailwind' class="btn btn-secondary btn-lg exhaust-button">Add<br>Tailwind</a>
+                </div>
+                <div>
+                    <a id='sprint_headwind' class="btn btn-secondary btn-lg exhaust-button">Add<br>Headwind</a>
+                </div>
+                {% endif %}
             </div>
 
             <div class="col-sm-3 col-6">
@@ -28,6 +36,14 @@
 
                     </div>
                 </a>
+                {% if session['is_meteo'] %}
+                <div>
+                    <a id='roll_tailwind' class="btn btn-secondary btn-lg exhaust-button">Add<br>Tailwind</a>
+                </div>
+                <div>
+                    <a id='roll_headwind' class="btn btn-secondary btn-lg exhaust-button">Add<br>Headwind</a>
+                </div>
+                {% endif %}
             </div>
 
 
@@ -36,5 +52,35 @@
 
 
 
+
+{% endblock %}
+
+{% block script %}
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.exhaust-button').on('click', function() {
+
+            var deck_id = $(this).attr('id');
+            var gust = new Audio('{{ url_for('static', filename='sounds/wind_gust.mp3') }}')
+
+            req = $.ajax({
+                url: '/change_hand_size',
+                type: 'POST',
+                data : { deck_id : deck_id }
+            });
+
+
+
+            $('#'+deck_id).fadeOut(function(){
+                $('#'+deck_id).html('Deck Size<br>Changed');
+                $('#'+deck_id).removeClass( "btn-secondary" ).addClass( "btn-danger" );
+
+            }).fadeIn();
+
+            gust.play();
+        });
+    });
+</script>
 
 {% endblock %}

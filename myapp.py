@@ -25,15 +25,15 @@ app.config["SECRET_KEY"] = "not_very_secret"
 basedir = pathlib.Path(__file__).parent.resolve()
 
 
-from flask_debugtoolbar import DebugToolbarExtension
-
-# the toolbar is only enabled in debug mode:
-app.debug = True
-toolbar = DebugToolbarExtension(app)
-# DEBUG_TB_INTERCEPT_REDIRECTS = False
-app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
-# Set the secret key to the debugtoolbar
-app.secret_key = "my_secret"
+# from flask_debugtoolbar import DebugToolbarExtension
+#
+# # the toolbar is only enabled in debug mode:
+# app.debug = True
+# toolbar = DebugToolbarExtension(app)
+# # DEBUG_TB_INTERCEPT_REDIRECTS = False
+# app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
+# # Set the secret key to the debugtoolbar
+# app.secret_key = "my_secret"
 
 
 @app.route("/")
@@ -67,7 +67,7 @@ def setup():
         session["view_played"] = request.form["view_played"]
 
     if "is_meteo" in request.form:
-        session["options"]["is_meteo"] = request.form["is_meteo"]
+        session["is_meteo"] = request.form["is_meteo"]
 
     # begin dealing with breakaway options
     if "breakaway_option" in request.form:
@@ -88,7 +88,8 @@ def choose_deck():
     session["is_sprint_exaust"] = False
     session["is_roll_exaust"] = False
     if session.get("is_meteo"):
-        session["hand_size"] = 4
+        session["sprint_hand_size"] = 4
+        session["roll_hand_size"] = 4
     session.modified = True
     return render_template("choose_deck.html")
 
@@ -96,7 +97,17 @@ def choose_deck():
 @app.route("/card_picker_1/<chosen_deck>", methods=["POST", "GET"])
 def card_picker_1(chosen_deck):
     # chosen_deck = request.form["deck_choice"]
-    shuffle_and_draw(chosen_deck, session["hand_size"])
+
+    if chosen_deck == "sprint":
+        hand_size = session["sprint_hand_size"]
+        print("sprint hand_size going into shuffle is")
+        print(hand_size)
+    else:
+        hand_size = session["roll_hand_size"]
+        print("roll hand_size going into shuffle is")
+        print(hand_size)
+
+    shuffle_and_draw(chosen_deck, hand_size)
     current_hand = session["current_hand"]
     session["current_deck"] = chosen_deck
     if session["current_deck"] == "sprint":
@@ -132,11 +143,17 @@ def card_picker_2():
         session["roll_discards"].append(chosen_card)
 
     # shuffle and deal hand for other deck
+
     if session["current_deck"] == "sprint":
-        shuffle_and_draw("roll", session["hand_size"])
+        hand_size = session["roll_hand_size"]
+    else:
+        hand_size = session["sprint_hand_size"]
+
+    if session["current_deck"] == "sprint":
+        shuffle_and_draw("roll", hand_size)
         session["current_deck"] = "roll"
     else:
-        shuffle_and_draw("sprint", session["hand_size"])
+        shuffle_and_draw("sprint", hand_size)
         session["current_deck"] = "sprint"
 
     current_hand = session["current_hand"]
@@ -191,8 +208,6 @@ def revealed_cards():
 @app.route("/add_exhaustion", methods=["POST"])
 def add_exhaustion():
     deck = request.form["deck_id"]
-    print("I am inside the add_exhaustion route")
-    print(deck)
     if deck == "sprint":
         session["sprint_faceup"].append([2, "S", "exhaustion-card"])
         # flash("Exhaustion card added to Sprinter Deck")
@@ -206,12 +221,29 @@ def add_exhaustion():
     return redirect(url_for("revealed_cards"))
 
 
+@app.route("/change_hand_size", methods=["POST"])
+def change_hand_size():
+    size_change_info = request.form["deck_id"]
+    print(size_change_info)
+    if size_change_info == "sprint_tailwind":
+        session["sprint_hand_size"] = 5
+        print("sprint_tailwind_1 sprint hand size should be 5")
+    if size_change_info == "sprint_headwind":
+        session["sprint_hand_size"] = 3
+    if size_change_info == "roll_tailwind":
+        session["roll_hand_size"] = 5
+    if size_change_info == "roll_headwind":
+        session["roll_hand_size"] = 3
+    session.modified = True
+    return ("", 204)
+
+
 @app.route("/test_endpoint", methods=["POST", "GET"])
 def test_endpoint():
 
     return render_template("trial.html")
 
 
-if __name__ == "__main__":
-    # app.run(debug=True)
-    app.run(host="0.0.0.0")
+# if __name__ == "__main__":
+#     # app.run(debug=True)
+#     app.run(host="0.0.0.0")
