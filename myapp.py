@@ -13,6 +13,7 @@ import json
 import pathlib
 from functions import *
 from breakaway import breakaway
+import pprint
 
 
 app = Flask(__name__)
@@ -25,15 +26,15 @@ app.config["SECRET_KEY"] = "not_very_secret"
 basedir = pathlib.Path(__file__).parent.resolve()
 
 
-# from flask_debugtoolbar import DebugToolbarExtension
-#
-# # the toolbar is only enabled in debug mode:
-# app.debug = True
-# toolbar = DebugToolbarExtension(app)
-# # DEBUG_TB_INTERCEPT_REDIRECTS = False
-# app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
-# # Set the secret key to the debugtoolbar
-# app.secret_key = "my_secret"
+from flask_debugtoolbar import DebugToolbarExtension
+
+# the toolbar is only enabled in debug mode:
+app.debug = True
+toolbar = DebugToolbarExtension(app)
+# DEBUG_TB_INTERCEPT_REDIRECTS = False
+app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
+# Set the secret key to the debugtoolbar
+app.secret_key = "my_secret"
 
 
 @app.route("/")
@@ -91,6 +92,8 @@ def choose_deck():
         session["sprint_hand_size"] = 4
         session["roll_hand_size"] = 4
     session.modified = True
+    freeze_state = dict(session)
+    pprint.pprint(freeze_state)
     return render_template("choose_deck.html")
 
 
@@ -244,6 +247,6 @@ def test_endpoint():
     return render_template("trial.html")
 
 
-# if __name__ == "__main__":
-#     # app.run(debug=True)
-#     app.run(host="0.0.0.0")
+if __name__ == "__main__":
+    # app.run(debug=True)
+    app.run(host="0.0.0.0")
