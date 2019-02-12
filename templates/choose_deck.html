@@ -13,35 +13,35 @@
 
 
             <div class="col-sm-3 offset-sm-3 col-6">
-                <a href="/card_picker_1/sprint">
-                    <div class="card-shape card-back sprint-back">
-                        <span class="central-letter">S</span>
+                <a href="/card_picker_1/deck_1">
+                    <div class="card-shape card-back {{ session['deck_1']['card-back'] }}">
+                        <span class="central-letter">{{ session['deck_1']['card-letter'] }}</span>
 
                     </div>
                 </a>
                 {% if session['is_meteo'] %}
                 <div>
-                    <a id='sprint_tailwind' class="btn btn-secondary btn-lg exhaust-button">Add<br>Tailwind</a>
+                    <a id='deck_1_tailwind' class="btn btn-secondary btn-lg exhaust-button">Add<br>Tailwind</a>
                 </div>
                 <div>
-                    <a id='sprint_headwind' class="btn btn-secondary btn-lg exhaust-button">Add<br>Headwind</a>
+                    <a id='deck_1_headwind' class="btn btn-secondary btn-lg exhaust-button">Add<br>Headwind</a>
                 </div>
                 {% endif %}
             </div>
 
             <div class="col-sm-3 col-6">
-                <a href="/card_picker_1/roll">
-                    <div class="card-shape card-back roll-back">
-                        <span class="central-letter">R</span>
+                <a href="/card_picker_1/deck_2">
+                    <div class="card-shape card-back {{ session['deck_2']['card-back'] }}">
+                        <span class="central-letter">{{ session['deck_2']['card-letter'] }}</span>
 
                     </div>
                 </a>
                 {% if session['is_meteo'] %}
                 <div>
-                    <a id='roll_tailwind' class="btn btn-secondary btn-lg exhaust-button">Add<br>Tailwind</a>
+                    <a id='deck_2_tailwind' class="btn btn-secondary btn-lg exhaust-button">Add<br>Tailwind</a>
                 </div>
                 <div>
-                    <a id='roll_headwind' class="btn btn-secondary btn-lg exhaust-button">Add<br>Headwind</a>
+                    <a id='deck_2_headwind' class="btn btn-secondary btn-lg exhaust-button">Add<br>Headwind</a>
                 </div>
                 {% endif %}
             </div>

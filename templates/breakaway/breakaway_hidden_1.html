@@ -10,25 +10,16 @@
 
         <div class="row">
 
-            {% if current_deck == 'sprint' %}
+
             <div class="col-sm-3 offset-sm-3 col-6">
                 <a href="/breakaway/revealed_breakaway_card_1">
-                    <div class="card-shape card-back sprint-back">
-                        <span class="central-letter">S</span>
+                    <div class="card-shape card-back {{ breakaway_card_backs }}">
+                        <span class="central-letter">{{ central_letter }}</span>
 
                     </div>
                 </a>
             </div>
-            {% else %}
-            <div class="col-sm-3 col-6">
-                <a href="/breakaway/revealed_breakaway_card_1">
-                    <div class="card-shape card-back roll-back">
-                        <span class="central-letter">R</span>
 
-                    </div>
-                </a>
-            </div>
-            {% endif %}
 
         </div><!--endrow-->
 

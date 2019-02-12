@@ -8,56 +8,74 @@
 </div>
 
 
+    <div class="row">
 
-        <div class="row">
+        <div class="col-sm-3 offset-sm-3 col-6">
 
+            <div class="card-shape {{ chosen_cards[0][2] }}">
+                <span class="{% if "S" == chosen_cards[0][1] %}
+                    mini-letter
+                {% else %}mini-letter-square
+                {% endif %}">{{ chosen_cards[0][1] }}</span>
+                <p>{{ chosen_cards[0][0] }}</p>
+            </div>
 
+            <div>
+                <a id='pos_0' class="btn btn-secondary btn-lg exhaust-button">Mark<br>Winner</a>
+            </div>
 
-                    <div class="col-sm-3 offset-sm-3 col-6">
+        </div>
 
-                            <div class="card-shape {{ chosen_card_0[2] }}">
-                                <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ chosen_card_0[1] }}</span>
-                                <p>{{ chosen_card_0[0] }}</p>
-                            </div>
-                            <div>
-                            {% if session["is_breakaway_winner_0"] == False %}
-                                <a href="/breakaway/breakaway_winner/0" class="btn btn-secondary btn-lg justify-content-center exhaust-button">Mark<br>Winner</a>
-                            {% else %}
-                                <a href="#" class="btn btn-danger btn-lg exhaust-button">Exhaustion<br>Added</a>
-                            {% endif %}
-                            </div>
+        <div class="col-sm-3 col-6">
 
-                    </div>
+            <div class="card-shape {{ chosen_cards[1][2] }}">
+                <span class="{% if "S" == chosen_cards[1][1] %}
+                    mini-letter
+                {% else %}mini-letter-square
+                {% endif %}">{{ chosen_cards[1][1] }}</span>
+                <p>{{ chosen_cards[1][0] }}</p>
+            </div>
 
+            <div>
+                <a id='pos_1' class="btn btn-secondary btn-lg exhaust-button">Mark<br>Winner</a>
+            </div>
 
+        </div>
 
-
-
-                    <div class="col-sm-3 col-6">
-
-                            <div class="card-shape {{ chosen_card_1[2] }}">
-                                <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ chosen_card_1[1] }}</span>
-                                <p>{{ chosen_card_1[0] }}</p>
-                            </div>
-                            <div>
-                            {% if session["is_breakaway_winner_1"] == False %}
-                                <a href="/breakaway/breakaway_winner/1" class="btn btn-secondary btn-lg justify-content-center exhaust-button">Mark<br>Winner</a>
-                            {% else %}
-                                <a href="#" class="btn btn-danger btn-lg exhaust-button">Exhaustion<br>Added</a>
-                            {% endif %}
-                            </div>
-
-                    </div>
-
-
-
-
-        </div><!--endrow-->
-        <div class="row mt-5 justify-content-center">
-        <a href="{{ url_for('breakaway.breakaway_final_check') }}" class="btn btn-primary btn-lg">Move to first Round</a>
-        </div><!--endrow-->
+    </div><!--endrow-->
+    <div class="row mt-5 justify-content-center">
+    <a href="{{ url_for('breakaway.breakaway_final_check') }}" class="btn btn-primary btn-lg">Move to first Round</a>
+    </div><!--endrow-->
 
 
     </form>
+
+{% endblock %}
+
+
+{% block script %}
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.exhaust-button').on('click', function() {
+
+            var place = $(this).attr('id');
+            var dingDing = new Audio('{{ url_for('static', filename='sounds/bike-bell.mp3') }}')
+
+            req = $.ajax({
+                url: '/breakaway/breakaway_winner',
+                type: 'POST',
+                data : { place : place }
+            });
+
+            $('#'+place).fadeOut(function(){
+                $('#'+place).html('Exhaustion<br>Added');
+                $('#'+place).removeClass( "btn-secondary" ).addClass( "btn-danger" );
+
+            }).fadeIn();
+
+        });
+    });
+</script>
 
 {% endblock %}

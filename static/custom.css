@@ -81,16 +81,16 @@ div.card-shape p {
 }
 
 /* -------------- back of card styles --------------*/
-div.roll-back .central-letter {
+div.rouleur-back .central-letter {
     border-radius: 10px;
 }
 
-div.roll-back {
+div.rouleur-back {
     background-color: #ffb733;
     border: 5px solid #fff;
 }
 
-div.sprint-back {
+div.sprinteur-back {
     background-color: #b19cd9;
     border: 5px solid #fff;
 }

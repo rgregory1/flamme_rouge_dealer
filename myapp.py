@@ -12,7 +12,7 @@ import random
 import json
 import pathlib
 from functions import *
-from breakaway import breakaway
+from blue.breakaway.breakaway import breakaway
 import pprint
 
 
@@ -74,8 +74,6 @@ def setup():
     if "breakaway_option" in request.form:
         # setup the breakaway variables
         session["breakaway_option"] = request.form["breakaway_option"]
-        session["is_breakaway_winner_0"] = False
-        session["is_breakaway_winner_1"] = False
         session.modified = True
         return render_template("breakaway/breakaway_deck_choice.html")
     session.modified = True
@@ -86,37 +84,24 @@ def setup():
 def choose_deck():
     session["chosen_cards"] = []
     session["round"] += 1
-    session["is_sprint_exaust"] = False
-    session["is_roll_exaust"] = False
     if session.get("is_meteo"):
-        session["sprint_hand_size"] = 4
-        session["roll_hand_size"] = 4
+        session["deck_1"]["hand_size"] = 4
+        session["deck_2"]["hand_size"] = 4
     session.modified = True
-    freeze_state = dict(session)
-    pprint.pprint(freeze_state)
+    # freeze the state to come back to the beginning of the round
+    # freeze_state = dict(session)
     return render_template("choose_deck.html")
 
 
 @app.route("/card_picker_1/<chosen_deck>", methods=["POST", "GET"])
 def card_picker_1(chosen_deck):
-    # chosen_deck = request.form["deck_choice"]
 
-    if chosen_deck == "sprint":
-        hand_size = session["sprint_hand_size"]
-        print("sprint hand_size going into shuffle is")
-        print(hand_size)
-    else:
-        hand_size = session["roll_hand_size"]
-        print("roll hand_size going into shuffle is")
-        print(hand_size)
-
-    shuffle_and_draw(chosen_deck, hand_size)
+    shuffle_and_draw(chosen_deck)
     current_hand = session["current_hand"]
     session["current_deck"] = chosen_deck
-    if session["current_deck"] == "sprint":
-        deck_for_title = "Sprinter"
-    else:
-        deck_for_title = "Roller"
+
+    deck_for_title = session[chosen_deck]["name"]
+
     session.modified = True
     form_destination = "card_picker_2"
     return render_template(
@@ -133,38 +118,34 @@ def card_picker_2():
     chosen_card_position = request.form["card_choice"]
     # assign that card choice to chosen card and add that to session list
     chosen_card = session["current_hand"].pop(int(chosen_card_position))
-    session["chosen_cards"].append(chosen_card)
+    if session["current_deck"] == "deck_1":
+        session["chosen_cards"].insert(0, chosen_card)
+    else:
+        session["chosen_cards"].insert(1, chosen_card)
 
     # add rest of hand to facedown cards
-    if session["current_deck"] == "sprint":
-        session["sprint_faceup"].extend(session["current_hand"])
-        session["current_hand"] = []
-        session["sprint_discards"].append(chosen_card)
-    else:
-        session["roll_faceup"].extend(session["current_hand"])
-        session["current_hand"] = []
-        session["roll_discards"].append(chosen_card)
+    current_deck = session["current_deck"]
+
+    session[current_deck]["recycled"].extend(session["current_hand"])
+    session["current_hand"] = []
+    session[current_deck]["discards"].append(chosen_card)
 
     # shuffle and deal hand for other deck
 
-    if session["current_deck"] == "sprint":
-        hand_size = session["roll_hand_size"]
+    if session["current_deck"] == "deck_1":
+        shuffle_and_draw("deck_2")
+        session["current_deck"] = "deck_2"
+        current_deck = session["current_deck"]
     else:
-        hand_size = session["sprint_hand_size"]
-
-    if session["current_deck"] == "sprint":
-        shuffle_and_draw("roll", hand_size)
-        session["current_deck"] = "roll"
-    else:
-        shuffle_and_draw("sprint", hand_size)
-        session["current_deck"] = "sprint"
+        shuffle_and_draw("deck_1")
+        session["current_deck"] = "deck_1"
+        current_deck = session["current_deck"]
 
     current_hand = session["current_hand"]
-    if session["current_deck"] == "roll":
-        deck_for_title = "Roller"
-    else:
-        deck_for_title = "Sprinter"
-    previous_card = session["chosen_cards"][0]
+
+    deck_for_title = session[current_deck]["name"]
+
+    previous_card = chosen_card
     session.modified = True
     form_destination = "hidden_cards"
     return render_template(
@@ -182,19 +163,19 @@ def hidden_cards():
     chosen_card_position = request.form["card_choice"]
     # assign that card choice to chosen card and add that to session list
     chosen_card = session["current_hand"].pop(int(chosen_card_position))
-    session["chosen_cards"].append(chosen_card)
+    if session["current_deck"] == "deck_1":
+        session["chosen_cards"].insert(0, chosen_card)
+    else:
+        session["chosen_cards"].insert(1, chosen_card)
 
     # add rest of hand to facedown cards
-    if session["current_deck"] == "sprint":
-        session["sprint_faceup"].extend(session["current_hand"])
-        session["current_hand"] = []
-        session["sprint_discards"].append(chosen_card)
-    else:
-        session["roll_faceup"].extend(session["current_hand"])
-        session["current_hand"] = []
-        session["roll_discards"].append(chosen_card)
-    session["current_deck"] = []
+    current_deck = session["current_deck"]
+    session[current_deck]["recycled"].extend(session["current_hand"])
     session["current_hand"] = []
+    session[current_deck]["discards"].append(chosen_card)
+
+    session["current_deck"] = []
+
     session.modified = True
     return render_template("hidden_cards.html")
 
@@ -211,15 +192,10 @@ def revealed_cards():
 @app.route("/add_exhaustion", methods=["POST"])
 def add_exhaustion():
     deck = request.form["deck_id"]
-    if deck == "sprint":
-        session["sprint_faceup"].append([2, "S", "exhaustion-card"])
-        # flash("Exhaustion card added to Sprinter Deck")
-        session["is_sprint_exaust"] = True
-
-    else:
-        session["roll_faceup"].append([2, "R", "exhaustion-card"])
-        # flash("Exhaustion card added to Roller Deck")
-        session["is_roll_exaust"] = True
+    if deck == "deck_1" or "deck_2":
+        session[deck]["recycled"].append(
+            [2, session[deck]["card-letter"], "exhaustion-card"]
+        )
     session.modified = True
     return redirect(url_for("revealed_cards"))
 
@@ -228,23 +204,22 @@ def add_exhaustion():
 def change_hand_size():
     size_change_info = request.form["deck_id"]
     print(size_change_info)
-    if size_change_info == "sprint_tailwind":
-        session["sprint_hand_size"] = 5
-        print("sprint_tailwind_1 sprint hand size should be 5")
-    if size_change_info == "sprint_headwind":
-        session["sprint_hand_size"] = 3
-    if size_change_info == "roll_tailwind":
-        session["roll_hand_size"] = 5
-    if size_change_info == "roll_headwind":
-        session["roll_hand_size"] = 3
+    if size_change_info == "deck_1_tailwind":
+        session["deck_1"]["hand_size"] = 5
+    if size_change_info == "deck_1_headwind":
+        session["deck_1"]["hand_size"] = 3
+    if size_change_info == "deck_2_tailwind":
+        session["deck_2"]["hand_size"] = 5
+    if size_change_info == "deck_2_headwind":
+        session["deck_2"]["hand_size"] = 3
     session.modified = True
     return ("", 204)
 
 
-@app.route("/test_endpoint", methods=["POST", "GET"])
-def test_endpoint():
-
-    return render_template("trial.html")
+# @app.route("/test_endpoint", methods=["POST", "GET"])
+# def test_endpoint():
+#
+#     return render_template("trial.html")
 
 
 if __name__ == "__main__":

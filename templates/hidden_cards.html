@@ -13,8 +13,8 @@
 
             <div class="col-sm-3 offset-sm-3 col-6">
                 <a href="/revealed_cards">
-                    <div class="card-shape card-back sprint-back">
-                        <span class="central-letter">S</span>
+                    <div class="card-shape card-back {{ session['deck_1']['card-back'] }}">
+                        <span class="central-letter">{{ session['deck_1']['card-letter'] }}</span>
 
                     </div>
                 </a>
@@ -22,8 +22,8 @@
 
             <div class="col-sm-3 col-6">
                 <a href="/revealed_cards">
-                    <div class="card-shape card-back roll-back">
-                        <span class="central-letter">R</span>
+                    <div class="card-shape card-back {{ session['deck_2']['card-back'] }}">
+                        <span class="central-letter">{{ session['deck_2']['card-letter'] }}</span>
 
                     </div>
                 </a>

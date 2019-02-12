@@ -11,33 +11,33 @@
 
         <div class="row">
 
-            {% for card in chosen_cards if card[1] == "S" %}
+            <div class="col-sm-3 offset-sm-3 col-6">
+                <div class="card-shape {{ chosen_cards[0][2] }}">
+                    <span class="
+                        {% if "S" == chosen_cards[0][1] %}
+                            mini-letter
+                        {% else %}mini-letter-square
+                        {% endif %}">{{ chosen_cards[0][1] }}</span>
+                    <p>{{ chosen_cards[0][0] }}</p>
+                </div>
+                <div>
+                    <a id='deck_1' class="btn btn-secondary btn-lg exhaust-button">Add {{ session['deck_1']['name'] }}<br>Exhaustion</a>
+                </div>
+            </div>
 
-                    <div class="col-sm-3 offset-sm-3 col-6">
-                        <div class="card-shape {{ card[2] }}">
-                            <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
-                            <p>{{ card[0] }}</p>
-                        </div>
-                        <div>
-                            <a id='sprint' class="btn btn-secondary btn-lg exhaust-button">Add Sprinter<br>Exhaustion</a>
-                        </div>
-                    </div>
+            <div class="col-sm-3 col-6">
+                <div class="card-shape {{ chosen_cards[1][2] }}">
+                    <span class="{% if "S" == chosen_cards[1][1] %}
+                        mini-letter
+                    {% else %}mini-letter-square
+                    {% endif %}">{{ chosen_cards[1][1] }}</span>
+                    <p>{{ chosen_cards[1][0] }}</p>
+                </div>
+                <div>
+                    <a id='deck_2' class="btn btn-secondary btn-lg exhaust-button">Add {{ session['deck_2']['name'] }}<br>Exhaustion</a>
+                </div>
+            </div>
 
-            {% endfor %}
-
-            {% for card in chosen_cards if card[1] == "R" %}
-
-                    <div class="col-sm-3 col-6">
-                        <div class="card-shape {{ card[2] }}">
-                            <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
-                            <p>{{ card[0] }}</p>
-                        </div>
-                        <div>
-                            <a id='roll' class="btn btn-secondary btn-lg exhaust-button">Add Sprinter<br>Exhaustion</a>
-                        </div>
-                    </div>
-
-            {% endfor %}
 
 
         </div><!--endrow-->
@@ -59,13 +59,13 @@
                         <span class="played_cards"><strong>Remaining Exhaustion: </strong></span>
                     </div>
                     <div class="col-sm-3 col-6 collapse show-Remaining-exhaustion">
-                    <span class="played_cards">Sprinter -
-                        {% for card in session['sprint_deck'] %}
+                    <span class="played_cards">{{ session['deck_1']['name'] }} -
+                        {% for card in session['deck_1']['energy'] %}
                             {% if card[2] == 'exhaustion-card'%}
                                 <span>2</span>
                             {% endif %}
                         {% endfor %}
-                        {% for card in session['sprint_faceup'] %}
+                        {% for card in session['deck_1']['recycled'] %}
                             {% if card[2] == 'exhaustion-card'%}
                                 <span>2</span>
                             {% endif %}
@@ -73,13 +73,13 @@
                     </span>
                     </div>
                      <div class="col-sm-3 col-6 collapse show-Remaining-exhaustion">
-                        <span class="played_cards">Roller -
-                            {% for card in session['roll_deck'] %}
+                        <span class="played_cards">{{ session['deck_2']['name'] }} -
+                            {% for card in session['deck_2']['energy'] %}
                                 {% if card[2] == 'exhaustion-card'%}
                                     <span>2</span>
                                 {% endif %}
                             {% endfor %}
-                            {% for card in session['roll_faceup'] %}
+                            {% for card in session['deck_2']['recycled'] %}
                                 {% if card[2] == 'exhaustion-card'%}
                                     <span>2</span>
                                 {% endif %}
@@ -222,6 +222,7 @@
             $('#'+deck_id).fadeOut(function(){
                 $('#'+deck_id).html('Exhaustion<br>Added');
                 $('#'+deck_id).removeClass( "btn-secondary" ).addClass( "btn-danger" );
+                // $('#'+deck_id).attr("id", deck_id+'_remove');
 
             }).fadeIn();
 

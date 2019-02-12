@@ -10,18 +10,14 @@ def initialize_session():
     session["round"] = 0
     session["current_hand"] = []
     session["chosen_cards"] = []
-    session["sprint_discards"] = []
-    session["sprint_faceup"] = []
-    session["roll_discards"] = []
-    session["roll_faceup"] = []
     session["current_deck"] = ""
-    session["is_sprint_exaust"] = False
-    session["is_roll_exaust"] = False
     session["view_played"] = False
     session["is_exhaustion_reminder"] = False
-    session["sprint_hand_size"] = 4
-    session["roll_hand_size"] = 4
     session["options"] = {}
+    session["deck_1"] = {}
+    session["deck_2"] = {}
+    session["deck_1"]["hand_size"] = 4
+    session["deck_2"]["hand_size"] = 4
 
 
 def load_player_deck(team_color):
@@ -31,25 +27,39 @@ def load_player_deck(team_color):
         add_sprint_exhaustion = int(request.form["add_sprint_exhaustion"])
         add_roll_exhaustion = int(request.form["add_roll_exhaustion"])
 
+    # build sprinter deck
+    # session["deck_1"]["type"] = "sprinter"
+    session["deck_1"]["name"] = "Sprinteur"
+    session["deck_1"]["recycled"] = []
+    session["deck_1"]["discards"] = []
+    session["deck_1"]["card-back"] = "sprinteur-back"
+    session["deck_1"]["card-letter"] = "S"
     target_directory = basedir / "static" / "data_files" / "sprinter_cards.json"
     with open(target_directory) as f:
-        session["sprint_deck"] = json.load(f)
-    for card in session["sprint_deck"]:
+        session["deck_1"]["energy"] = json.load(f)
+    for card in session["deck_1"]["energy"]:
         card.append(team_color)
 
     if add_sprint_exhaustion > 0:
         for card in range(add_sprint_exhaustion):
-            session["sprint_deck"].append([2, "S", "exhaustion-card"])
+            session["deck_1"]["energy"].append([2, "S", "exhaustion-card"])
 
+    # build roller deck
+    # session["deck_2"]["type"] = "roller"
+    session["deck_2"]["name"] = "Rouleur"
+    session["deck_2"]["recycled"] = []
+    session["deck_2"]["discards"] = []
+    session["deck_2"]["card-back"] = "rouleur-back"
+    session["deck_2"]["card-letter"] = "R"
     target_directory = basedir / "static" / "data_files" / "roller_cards.json"
     with open(target_directory) as f:
-        session["roll_deck"] = json.load(f)
-    for card in session["roll_deck"]:
+        session["deck_2"]["energy"] = json.load(f)
+    for card in session["deck_2"]["energy"]:
         card.append(team_color)
 
     if add_roll_exhaustion > 0:
         for card in range(add_roll_exhaustion):
-            session["roll_deck"].append([2, "R", "exhaustion-card"])
+            session["deck_2"]["energy"].append([2, "R", "exhaustion-card"])
 
 
 def check_for_ai_teams():
@@ -136,55 +146,87 @@ def print_debug(cards_needed, hand_size, number):
     print(session["sprint_faceup"])
 
 
-def shuffle_and_draw(deck, hand_size):
+def shuffle_and_draw(deck):
     # set initial hand size
-    cards_needed = hand_size
-    if deck == "sprint":
-        # check to see if cards need to be recycled
-        if len(session["sprint_deck"]) < hand_size:
-            # set cards needed to amount less than what is in rest of deck
-            cards_needed = hand_size - len(session["sprint_deck"])
-            # add deck into current hand
-            session["current_hand"].extend(session["sprint_deck"])
-            # put recycled cards into deck
-            session["sprint_deck"] = session["sprint_faceup"]
-            # zero out recycled cards
-            session["sprint_faceup"] = []
-            # check to see if there are fewer cards in play than need for the hand
-            if len(session["sprint_deck"]) + len(session["current_hand"]) < hand_size:
-                # set new lower number of cards needed
-                cards_needed = len(session["sprint_deck"]) + len(
-                    session["current_hand"]
-                )
-        random.shuffle(session["sprint_deck"])
-        # add cards to hand from deck
-        for x in range(cards_needed):
-            current_card = session["sprint_deck"].pop()
-            session["current_hand"].append(current_card)
-        # if hand is empty added exhaustion card so rider can move the 2 minimum
-        if session["current_hand"] == []:
-            session["current_hand"].append([2, "S", "exhaustion-card"])
+    cards_needed = session[deck]["hand_size"]
 
-    else:
-        # check to see if cards need to be recycled
-        if len(session["roll_deck"]) < hand_size:
-            # set cards needed to amount less than what is in rest of deck
-            cards_needed = hand_size - len(session["roll_deck"])
-            # add deck into current hand
-            session["current_hand"].extend(session["roll_deck"])
-            # put recycled cards into deck
-            session["roll_deck"] = session["roll_faceup"]
-            # zero out recycled cards
-            session["roll_faceup"] = []
-            # check to see if there are fewer cards in play than need for the hand
-            if len(session["roll_deck"]) + len(session["current_hand"]) < hand_size:
-                # set new lower number of cards needed
-                cards_needed = len(session["roll_deck"]) + len(session["current_hand"])
-        random.shuffle(session["roll_deck"])
-        # add cards to hand from deck
-        for x in range(cards_needed):
-            current_card = session["roll_deck"].pop()
-            session["current_hand"].append(current_card)
-        # if hand is empty added exhaustion card so rider can move the 2 minimum
-        if session["current_hand"] == []:
-            session["current_hand"].append([2, "S", "exhaustion-card"])
+    # check to see if cards need to be recycled
+    if len(session[deck]["energy"]) < session[deck]["hand_size"]:
+        # set cards needed to amount less than what is in rest of deck
+        cards_needed = session[deck]["hand_size"] - len(session[deck]["energy"])
+        # add deck into current hand
+        session["current_hand"].extend(session[deck]["energy"])
+        # put recycled cards into deck
+        session[deck]["energy"] = session[deck]["recycled"]
+        # zero out recycled cards
+        session[deck]["recycled"] = []
+        # check to see if there are fewer cards in play than need for the hand
+        if (
+            len(session[deck]["energy"]) + len(session["current_hand"])
+            < session[deck]["hand_size"]
+        ):
+            # set new lower number of cards needed
+            cards_needed = len(session[deck]["energy"]) + len(session["current_hand"])
+    random.shuffle(session[deck]["energy"])
+    # add cards to hand from deck
+    for x in range(cards_needed):
+        current_card = session[deck]["energy"].pop()
+        session["current_hand"].append(current_card)
+    # if hand is empty added exhaustion card so rider can move the 2 minimum
+    if session["current_hand"] == []:
+        session["current_hand"].append([2, "S", "exhaustion-card"])
+
+
+#
+# def shuffle_and_draw_2(deck, hand_size):
+#     # set initial hand size
+#     cards_needed = hand_size
+#     if deck == "sprint":
+#         # check to see if cards need to be recycled
+#         if len(session["sprint_deck"]) < hand_size:
+#             # set cards needed to amount less than what is in rest of deck
+#             cards_needed = hand_size - len(session["sprint_deck"])
+#             # add deck into current hand
+#             session["current_hand"].extend(session["sprint_deck"])
+#             # put recycled cards into deck
+#             session["sprint_deck"] = session["sprint_faceup"]
+#             # zero out recycled cards
+#             session["sprint_faceup"] = []
+#             # check to see if there are fewer cards in play than need for the hand
+#             if len(session["sprint_deck"]) + len(session["current_hand"]) < hand_size:
+#                 # set new lower number of cards needed
+#                 cards_needed = len(session["sprint_deck"]) + len(
+#                     session["current_hand"]
+#                 )
+#         random.shuffle(session["sprint_deck"])
+#         # add cards to hand from deck
+#         for x in range(cards_needed):
+#             current_card = session["sprint_deck"].pop()
+#             session["current_hand"].append(current_card)
+#         # if hand is empty added exhaustion card so rider can move the 2 minimum
+#         if session["current_hand"] == []:
+#             session["current_hand"].append([2, "S", "exhaustion-card"])
+#
+#     else:
+#         # check to see if cards need to be recycled
+#         if len(session["roll_deck"]) < hand_size:
+#             # set cards needed to amount less than what is in rest of deck
+#             cards_needed = hand_size - len(session["roll_deck"])
+#             # add deck into current hand
+#             session["current_hand"].extend(session["roll_deck"])
+#             # put recycled cards into deck
+#             session["roll_deck"] = session["roll_faceup"]
+#             # zero out recycled cards
+#             session["roll_faceup"] = []
+#             # check to see if there are fewer cards in play than need for the hand
+#             if len(session["roll_deck"]) + len(session["current_hand"]) < hand_size:
+#                 # set new lower number of cards needed
+#                 cards_needed = len(session["roll_deck"]) + len(session["current_hand"])
+#         random.shuffle(session["roll_deck"])
+#         # add cards to hand from deck
+#         for x in range(cards_needed):
+#             current_card = session["roll_deck"].pop()
+#             session["current_hand"].append(current_card)
+#         # if hand is empty added exhaustion card so rider can move the 2 minimum
+#         if session["current_hand"] == []:
+#             session["current_hand"].append([2, "S", "exhaustion-card"])

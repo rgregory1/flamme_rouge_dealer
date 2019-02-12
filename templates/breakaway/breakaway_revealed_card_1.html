@@ -11,32 +11,17 @@
 
         <div class="row">
 
-            {% for card in chosen_cards if card[1] == "S" %}
+            <div class="col-sm-3 offset-sm-3 col-6">
 
-                    <div class="col-sm-3 offset-sm-3 col-6">
-
-                            <div class="card-shape {{ card[2] }}">
-                                <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
-                                <p>{{ card[0] }}</p>
-                            </div>
-
+                    <div class="card-shape {{ chosen_cards[0][2] }}">
+                        <span class="{% if "S" == chosen_cards[0][1] %}
+                            mini-letter
+                        {% else %}mini-letter-square
+                        {% endif %}">{{ chosen_cards[0][1] }}</span>
+                        <p>{{ chosen_cards[0][0] }}</p>
                     </div>
 
-            {% endfor %}
-
-            {% for card in chosen_cards if card[1] == "R" %}
-
-                    <div class="col-sm-3 col-6">
-
-                            <div class="card-shape {{ card[2] }}">
-                                <span class="{% if "S" is in card %}mini-letter{% else %}mini-letter-square{% endif %}">{{ card[1] }}</span>
-                                <p>{{ card[0] }}</p>
-                            </div>
-
-                    </div>
-
-            {% endfor %}
-
+            </div>
 
         </div><!--endrow-->
         <div class="row mt-5">

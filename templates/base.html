@@ -62,8 +62,8 @@
                 <span class="played_cards"><strong>Played Cards: </strong></span>
             </div>
             <div class="col-md-3 col-sm">
-                <span class="played_cards">Sprinter -
-                    {% for played in session['sprint_discards'] %}
+                <span class="played_cards">{{ session['deck_1']['name'] }} -
+                    {% for played in session['deck_1']['discards'] %}
                         {% if 'exhaustion-card' in played %}
                             <span class="exhaust-number">
                         {% endif %}
@@ -74,7 +74,7 @@
                     {% endfor %}</span>
              </div>
              <div class="col-md-3 col-sm">
-                <span class="played_cards">Roller - {% for played in session['roll_discards'] %} {% if 'exhaustion-card' in played %}<span class="exhaust-number">{% endif %} {{ played[0] }} {% if 'exhaustion-card' in played %}</span>{% endif %} {% endfor %}</span>
+                <span class="played_cards">{{ session['deck_2']['name'] }} - {% for played in session['deck_2']['discards'] %} {% if 'exhaustion-card' in played %}<span class="exhaust-number">{% endif %} {{ played[0] }} {% if 'exhaustion-card' in played %}</span>{% endif %} {% endfor %}</span>
             </div>
 
         </div><!--end row-->
@@ -84,10 +84,10 @@
                 <span class="played_cards"><strong>Recycled Cards: </strong></span>
             </div>
             <div class="col-md-3 col-sm">
-                <span class="played_cards">Sprinter - {% for played in session['sprint_faceup'] %} {% if 'exhaustion-card' in played %}<span class="exhaust-number">{% endif %} {{ played[0] }} {% if 'exhaustion-card' in played %}</span>{% endif %} {% endfor %}</span>
+                <span class="played_cards">{{ session['deck_1']['name'] }} - {% for played in session['deck_1']['recycled'] %} {% if 'exhaustion-card' in played %}<span class="exhaust-number">{% endif %} {{ played[0] }} {% if 'exhaustion-card' in played %}</span>{% endif %} {% endfor %}</span>
              </div>
              <div class="col-md-3 col-sm">
-                <span class="played_cards">Roller - {% for played in session['roll_faceup'] %} {% if 'exhaustion-card' in played %}<span class="exhaust-number">{% endif %} {{ played[0] }} {% if 'exhaustion-card' in played %}</span>{% endif %} {% endfor %}</span>
+                <span class="played_cards">{{ session['deck_2']['name'] }} - {% for played in session['deck_2']['recycled'] %} {% if 'exhaustion-card' in played %}<span class="exhaust-number">{% endif %} {{ played[0] }} {% if 'exhaustion-card' in played %}</span>{% endif %} {% endfor %}</span>
             </div>
 
         </div><!--end row-->
