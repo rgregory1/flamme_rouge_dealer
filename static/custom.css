@@ -224,3 +224,14 @@ input[type=radio]:checked + label>div {
 
 
 }
+
+@media (min-width: 961px) and (max-width: 1200px){
+    div.card-shape, .exhaust-button {
+    -webkit-transform:scale(0.8);
+    -moz-transform:scale(0.8);
+    -ms-transform:scale(0.8);
+    transform:scale(0.8);
+    }
+
+
+}
