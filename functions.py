@@ -14,10 +14,8 @@ def initialize_session():
     session["view_played"] = False
     session["is_exhaustion_reminder"] = False
     session["options"] = {}
-    session["deck_1"] = {}
-    session["deck_2"] = {}
-    session["deck_1"]["hand_size"] = 4
-    session["deck_2"]["hand_size"] = 4
+    session["deck_1"] = {"hand_size": 4}
+    session["deck_2"] = {"hand_size": 4}
 
 
 def load_player_deck(team_color):
@@ -28,7 +26,6 @@ def load_player_deck(team_color):
         add_roll_exhaustion = int(request.form["add_roll_exhaustion"])
 
     # build sprinter deck
-    # session["deck_1"]["type"] = "sprinter"
     session["deck_1"]["name"] = "Sprinteur"
     session["deck_1"]["recycled"] = []
     session["deck_1"]["discards"] = []
@@ -45,7 +42,6 @@ def load_player_deck(team_color):
             session["deck_1"]["energy"].append([2, "S", "exhaustion-card"])
 
     # build roller deck
-    # session["deck_2"]["type"] = "roller"
     session["deck_2"]["name"] = "Rouleur"
     session["deck_2"]["recycled"] = []
     session["deck_2"]["discards"] = []
@@ -175,58 +171,3 @@ def shuffle_and_draw(deck):
     # if hand is empty added exhaustion card so rider can move the 2 minimum
     if session["current_hand"] == []:
         session["current_hand"].append([2, "S", "exhaustion-card"])
-
-
-#
-# def shuffle_and_draw_2(deck, hand_size):
-#     # set initial hand size
-#     cards_needed = hand_size
-#     if deck == "sprint":
-#         # check to see if cards need to be recycled
-#         if len(session["sprint_deck"]) < hand_size:
-#             # set cards needed to amount less than what is in rest of deck
-#             cards_needed = hand_size - len(session["sprint_deck"])
-#             # add deck into current hand
-#             session["current_hand"].extend(session["sprint_deck"])
-#             # put recycled cards into deck
-#             session["sprint_deck"] = session["sprint_faceup"]
-#             # zero out recycled cards
-#             session["sprint_faceup"] = []
-#             # check to see if there are fewer cards in play than need for the hand
-#             if len(session["sprint_deck"]) + len(session["current_hand"]) < hand_size:
-#                 # set new lower number of cards needed
-#                 cards_needed = len(session["sprint_deck"]) + len(
-#                     session["current_hand"]
-#                 )
-#         random.shuffle(session["sprint_deck"])
-#         # add cards to hand from deck
-#         for x in range(cards_needed):
-#             current_card = session["sprint_deck"].pop()
-#             session["current_hand"].append(current_card)
-#         # if hand is empty added exhaustion card so rider can move the 2 minimum
-#         if session["current_hand"] == []:
-#             session["current_hand"].append([2, "S", "exhaustion-card"])
-#
-#     else:
-#         # check to see if cards need to be recycled
-#         if len(session["roll_deck"]) < hand_size:
-#             # set cards needed to amount less than what is in rest of deck
-#             cards_needed = hand_size - len(session["roll_deck"])
-#             # add deck into current hand
-#             session["current_hand"].extend(session["roll_deck"])
-#             # put recycled cards into deck
-#             session["roll_deck"] = session["roll_faceup"]
-#             # zero out recycled cards
-#             session["roll_faceup"] = []
-#             # check to see if there are fewer cards in play than need for the hand
-#             if len(session["roll_deck"]) + len(session["current_hand"]) < hand_size:
-#                 # set new lower number of cards needed
-#                 cards_needed = len(session["roll_deck"]) + len(session["current_hand"])
-#         random.shuffle(session["roll_deck"])
-#         # add cards to hand from deck
-#         for x in range(cards_needed):
-#             current_card = session["roll_deck"].pop()
-#             session["current_hand"].append(current_card)
-#         # if hand is empty added exhaustion card so rider can move the 2 minimum
-#         if session["current_hand"] == []:
-#             session["current_hand"].append([2, "S", "exhaustion-card"])

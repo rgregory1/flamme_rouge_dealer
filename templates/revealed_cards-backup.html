@@ -21,7 +21,7 @@
                     <p>{{ chosen_cards[0][0] }}</p>
                 </div>
                 <div>
-                    <a id='deck_1' class="btn btn-secondary btn-lg exhaust-button add-exhaust">Add {{ session['deck_1']['name'] }}<br>Exhaustion</a>
+                    <a id='deck_1' class="btn btn-secondary btn-lg exhaust-button">Add {{ session['deck_1']['name'] }}<br>Exhaustion</a>
                 </div>
             </div>
 
@@ -34,7 +34,7 @@
                     <p>{{ chosen_cards[1][0] }}</p>
                 </div>
                 <div>
-                    <a id='deck_2' class="btn btn-secondary btn-lg exhaust-button add-exhaust">Add {{ session['deck_2']['name'] }}<br>Exhaustion</a>
+                    <a id='deck_2' class="btn btn-secondary btn-lg exhaust-button">Add {{ session['deck_2']['name'] }}<br>Exhaustion</a>
                 </div>
             </div>
 
@@ -210,33 +210,18 @@
 
             var deck_id = $(this).attr('id');
             var dingDing = new Audio('{{ url_for('static', filename='sounds/bike-bell.mp3') }}')
-            var buttonText
-
-            if ( $('#'+deck_id).hasClass( "add-exhaust" ) ){
-                var action = 'add';
-                buttonText = 'Exhaustion<br>Added';
-            } else {
-                var action = 'remove';
-                buttonText = 'Add<br>Exhaustion';
-            }
 
             req = $.ajax({
                 url: '/add_exhaustion',
                 type: 'POST',
-                data : { deck_id : deck_id, action : action }
+                data : { deck_id : deck_id }
             });
 
 
 
             $('#'+deck_id).fadeOut(function(){
-                $('#'+deck_id).html( buttonText );
-
-                if ( $('#'+deck_id).hasClass( "add-exhaust" ) ){
-                    $('#'+deck_id).removeClass( "add-exhaust" ).removeClass( "btn-secondary" ).addClass( "btn-danger" );
-                } else {
-                    $('#'+deck_id).addClass( "add-exhaust" ).removeClass( "btn-danger" ).addClass( "btn-secondary" );
-                }
-
+                $('#'+deck_id).html('Exhaustion<br>Added');
+                $('#'+deck_id).removeClass( "btn-secondary" ).addClass( "btn-danger" );
                 // $('#'+deck_id).attr("id", deck_id+'_remove');
 
             }).fadeIn();

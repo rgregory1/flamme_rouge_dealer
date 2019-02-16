@@ -192,10 +192,17 @@ def revealed_cards():
 @app.route("/add_exhaustion", methods=["POST"])
 def add_exhaustion():
     deck = request.form["deck_id"]
-    if deck == "deck_1" or "deck_2":
+    action = request.form["action"]
+    print(action)
+
+    # add an exaustion card to recylced deck
+    if action == "add":
         session[deck]["recycled"].append(
             [2, session[deck]["card-letter"], "exhaustion-card"]
         )
+    if action == "remove":
+        session[deck]["recycled"].pop()
+
     session.modified = True
     return redirect(url_for("revealed_cards"))
 
@@ -206,12 +213,19 @@ def change_hand_size():
     print(size_change_info)
     if size_change_info == "deck_1_tailwind":
         session["deck_1"]["hand_size"] = 5
+
     if size_change_info == "deck_1_headwind":
         session["deck_1"]["hand_size"] = 3
+
+    if size_change_info == "deck_1_nowind":
+        session["deck_1"]["hand_size"] = 4
+
     if size_change_info == "deck_2_tailwind":
         session["deck_2"]["hand_size"] = 5
     if size_change_info == "deck_2_headwind":
         session["deck_2"]["hand_size"] = 3
+    if size_change_info == "deck_2_nowind":
+        session["deck_2"]["hand_size"] = 4
     session.modified = True
     return ("", 204)
 
